@@ -41,7 +41,10 @@
 				1AF65D0B21AF3A0C003ED163 /* u2f-ble */,
 				1AF65D0A21AF3A0C003ED163 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 1;
 		};
 		1AF65D0A21AF3A0C003ED163 /* Products */ = {
 			isa = PBXGroup;
@@ -54,12 +57,12 @@
 		1AF65D0B21AF3A0C003ED163 /* u2f-ble */ = {
 			isa = PBXGroup;
 			children = (
-				1AF65D0C21AF3A0C003ED163 /* AppDelegate.swift */,
-				1AF65D0E21AF3A0C003ED163 /* ViewController.swift */,
+				1AF65D1821AF3A0D003ED163 /* Info.plist */,
+				1AF65D1521AF3A0D003ED163 /* LaunchScreen.storyboard */,
 				1AF65D1021AF3A0C003ED163 /* Main.storyboard */,
 				1AF65D1321AF3A0D003ED163 /* Assets.xcassets */,
-				1AF65D1521AF3A0D003ED163 /* LaunchScreen.storyboard */,
-				1AF65D1821AF3A0D003ED163 /* Info.plist */,
+				1AF65D0C21AF3A0C003ED163 /* AppDelegate.swift */,
+				1AF65D0E21AF3A0C003ED163 /* ViewController.swift */,
 			);
 			path = "u2f-ble";
 			sourceTree = "<group>";
