@@ -1,0 +1,16 @@
+PODS:
+  - GMEllipticCurveCrypto (1.3)
+
+DEPENDENCIES:
+  - GMEllipticCurveCrypto
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GMEllipticCurveCrypto
+
+SPEC CHECKSUMS:
+  GMEllipticCurveCrypto: dff32bc22d2bfd73d6cbac841faeb40f8d79ce7f
+
+PODFILE CHECKSUM: 77ee4834990dd9a90c306715b2a6e5eddb4044bc
+
+COCOAPODS: 1.6.0.beta.1
