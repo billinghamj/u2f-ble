@@ -9,10 +9,10 @@
 import Foundation
 
 final class DataWriter {
-	private var internalData: Data
+	fileprivate var internalData: Data
 
 	var data: Data {
-		return internalData
+		return (internalData as NSData).copy() as! Data
 	}
 
 	var dataLength: Int {
@@ -81,11 +81,11 @@ final class DataWriter {
 		internalData.append(data)
 	}
 
-	private func writeNextInteger<T: FixedWidthInteger>(_ value: T) {
+	fileprivate func writeNextInteger<T: BinaryInteger>(_ value: T) {
 		internalData.append(withUnsafeBytes(of: value, { Data($0) }))
 	}
 
-	private func writeNextInteger<T: FixedWidthInteger>(_ value: T, bigEndian: Bool) {
+	fileprivate func writeNextInteger<T: FixedWidthInteger>(_ value: T, bigEndian: Bool) {
 		let value = bigEndian ? value.bigEndian : value.littleEndian
 		internalData.append(withUnsafeBytes(of: value, { Data($0) }))
 	}

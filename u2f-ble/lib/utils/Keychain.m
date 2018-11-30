@@ -6,8 +6,8 @@
 //  Copyright © 2016 Ledger. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <Security/Security.h>
+@import Foundation;
+@import Security;
 
 NSData *getPublicKeyBitsFromKey(SecKeyRef givenKey) {
 	static const uint8_t publicKeyIdentifier[] = "co.ledger.u2f-ble-test";

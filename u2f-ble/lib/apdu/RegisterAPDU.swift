@@ -9,18 +9,18 @@
 import Foundation
 
 final class RegisterAPDU: APDUType {
-	private static let reservedByte: UInt8 = 0x05
-	private static let derSeqByte: UInt8 = 0x30
-	private static let derLen1Byte: UInt8 = 0x81
-	private static let derLen2Byte: UInt8 = 0x82
+	fileprivate static let reservedByte: UInt8 = 0x05
+	fileprivate static let derSeqByte: UInt8 = 0x30
+	fileprivate static let derLen1Byte: UInt8 = 0x81
+	fileprivate static let derLen2Byte: UInt8 = 0x82
 
 	let challenge: Data
 	let applicationParameter: Data
 	var onDebugMessage: ((APDUType, String) -> Void)?
-	private(set) var publicKey: Data?
-	private(set) var keyHandle: Data?
-	private(set) var certificate: Data?
-	private(set) var signature: Data?
+	fileprivate(set) var publicKey: Data?
+	fileprivate(set) var keyHandle: Data?
+	fileprivate(set) var certificate: Data?
+	fileprivate(set) var signature: Data?
 
 	init?(challenge: Data, applicationParameter: Data) {
 		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
@@ -49,8 +49,8 @@ final class RegisterAPDU: APDUType {
 		return writer.data
 	}
 
-	func parseResponse(data: Data) -> Bool {
-		let reader = DataReader(data)
+	func parseResponse(_ data: Data) -> Bool {
+		let reader = DataReader(data: data)
 
 		// public key
 		guard
@@ -104,10 +104,7 @@ final class RegisterAPDU: APDUType {
 		let finalCertificate = writer.data
 
 		// signature
-		guard
-			let derSequence2 = reader.readNextUInt8(),
-			derSequence2 == type(of: self).derSeqByte
-			else { return false }
+		guard let derSequence2 = reader.readNextUInt8(), derSequence2 == type(of: self).derSeqByte else { return false }
 		guard
 			let signatureLength = reader.readNextUInt8(),
 			let signature = reader.readNextDataOfLength(Int(signatureLength))
@@ -122,14 +119,14 @@ final class RegisterAPDU: APDUType {
 		self.publicKey = publicKey
 		self.keyHandle = keyHandle
 		self.certificate = finalCertificate
-		self.signature = finalSignature as Data
+		self.signature = finalSignature
 
 		onDebugMessage?(self, "Building REGISTER APDU response...")
 		onDebugMessage?(self, "Got public key = \(publicKey)")
 		onDebugMessage?(self, "Got key handle = \(keyHandle)")
 		onDebugMessage?(self, "Got certificate = \(finalCertificate)")
 		onDebugMessage?(self, "Got signature = \(finalSignature)")
-		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyRegisterSignature(APDU: self))")
+		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyRegisterSignature(self))")
 		return true
 	}
 }

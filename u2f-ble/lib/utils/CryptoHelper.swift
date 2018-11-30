@@ -10,13 +10,13 @@ import Foundation
 import Security
 
 @objc final class CryptoHelper: NSObject {
-	static func verifyRegisterSignature(APDU: RegisterAPDU) -> Bool {
+	static func verifyRegisterSignature(_ APDU: RegisterAPDU) ->  Bool {
 		guard
 			let certificate = APDU.certificate,
 			let signature = APDU.signature,
 			let keyHandle = APDU.keyHandle,
 			let publicKey = APDU.publicKey,
-			let extractedSignaturePoints = extractPointsFromSignature(signature: signature)
+			let extractedSignaturePoints = extractPointsFromSignature(signature)
 			else {
 				return false
 		}
@@ -35,9 +35,7 @@ import Security
 		let certificatePublicKey = getPublicKeyBitsFromKey(key)
 
 		// check signature
-		guard
-			let crypto = GMEllipticCurveCrypto(forKey: certificatePublicKey)
-			else { return false }
+		let crypto = GMEllipticCurveCrypto(forKey: certificatePublicKey)
 		var data = Data()
 		data.append([0x00] as [UInt8], count: 1)
 		data.append(APDU.applicationParameter)
@@ -47,24 +45,22 @@ import Security
 		var extractedSignature = Data()
 		extractedSignature.append(extractedSignaturePoints.r)
 		extractedSignature.append(extractedSignaturePoints.s)
-		return crypto.hashSHA256AndVerifySignature(extractedSignature, for: data)
+		return crypto!.hashSHA256AndVerifySignature(extractedSignature, for: data)
 	}
 
-	static func verifyAuthenticateSignature(APDU: AuthenticateAPDU) ->  Bool {
+	static func verifyAuthenticateSignature(_ APDU: AuthenticateAPDU) ->  Bool {
 		guard
 			let publicKey = APDU.registerAPDU.publicKey,
 			let userPresenceFlag = APDU.userPresenceFlag,
 			let counter = APDU.counter,
 			let signature = APDU.signature,
-			let extractedSignaturePoints = extractPointsFromSignature(signature: signature)
+			let extractedSignaturePoints = extractPointsFromSignature(signature)
 			else {
 				return false
 		}
 
 		// check signature
-		guard
-			let crypto = GMEllipticCurveCrypto(forKey: publicKey)
-			else { return false }
+		let crypto = GMEllipticCurveCrypto(forKey: publicKey)
 		let writer = DataWriter()
 		writer.writeNextData(APDU.applicationParameter)
 		writer.writeNextUInt8(userPresenceFlag)
@@ -73,11 +69,11 @@ import Security
 		var extractedSignature = Data()
 		extractedSignature.append(extractedSignaturePoints.r)
 		extractedSignature.append(extractedSignaturePoints.s)
-		return crypto.hashSHA256AndVerifySignature(extractedSignature, for: writer.data)
+		return crypto!.hashSHA256AndVerifySignature(extractedSignature, for: writer.data)
 	}
 
-	static func extractPointsFromSignature(signature: Data) -> (r: Data, s: Data)? {
-		let reader = DataReader(signature)
+	static func extractPointsFromSignature(_ signature: Data) -> (r: Data, s: Data)? {
+		let reader = DataReader(data: signature)
 		guard
 			let _ = reader.readNextUInt8(), // 0x30
 			let _ = reader.readNextUInt8(), // length
@@ -90,19 +86,16 @@ import Security
 			else {
 				return nil
 		}
-
 		r.withUnsafeBytes({ (bytes: UnsafePointer<UInt8>) -> Void in
 			if bytes[0] == 0x00 {
 				r.removeFirst()
 			}
 		})
-
 		s.withUnsafeBytes({ (bytes: UnsafePointer<UInt8>) -> Void in
 			if bytes[0] == 0x00 {
 				s.removeFirst()
 			}
 		})
-
 		return (r, s)
 	}
 }

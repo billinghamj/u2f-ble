@@ -9,7 +9,7 @@
 import Foundation
 
 final class AuthenticateAPDU: APDUType {
-	private static let derSeqByte: UInt8 = 0x30
+	fileprivate static let derSeqByte: UInt8 = 0x30
 
 	let challenge: Data
 	let applicationParameter: Data
@@ -17,9 +17,9 @@ final class AuthenticateAPDU: APDUType {
 	let keyHandle: Data
 	let registerAPDU: RegisterAPDU
 	var onDebugMessage: ((APDUType, String) -> Void)?
-	private(set) var userPresenceFlag: UInt8?
-	private(set) var counter: UInt32?
-	private(set) var signature: Data?
+	fileprivate(set) var userPresenceFlag: UInt8?
+	fileprivate(set) var counter: UInt32?
+	fileprivate(set) var signature: Data?
 
 	init?(registerAPDU: RegisterAPDU, challenge: Data, applicationParameter: Data, keyHandle: Data, checkOnly: Bool = false) {
 		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
@@ -39,7 +39,7 @@ final class AuthenticateAPDU: APDUType {
 		writer.writeNextUInt8(0x00) // p2
 		writer.writeNextUInt8(0x00) // 00
 		writer.writeNextUInt8(0x00) // l1
-		writer.writeNextUInt8(0x40 + 1 + UInt8(keyHandle.count)) // l2
+		writer.writeNextUInt8(UInt8(0x41) + UInt8(keyHandle.count)) // l2
 		writer.writeNextData(challenge)
 		writer.writeNextData(applicationParameter)
 		writer.writeNextUInt8(UInt8(keyHandle.count))
@@ -55,8 +55,8 @@ final class AuthenticateAPDU: APDUType {
 		return writer.data
 	}
 
-	func parseResponse(data: Data) -> Bool {
-		let reader = DataReader(data)
+	func parseResponse(_ data: Data) -> Bool {
+		let reader = DataReader(data: data)
 
 		// flags
 		guard
@@ -67,10 +67,7 @@ final class AuthenticateAPDU: APDUType {
 		}
 
 		// signature
-		guard
-			let derSequence = reader.readNextUInt8(),
-			derSequence == type(of: self).derSeqByte
-			else { return false }
+		guard let derSequence = reader.readNextUInt8(), derSequence == type(of: self).derSeqByte else { return false }
 		guard
 			let signatureLength = reader.readNextUInt8(),
 			let signature = reader.readNextDataOfLength(Int(signatureLength))
@@ -82,7 +79,7 @@ final class AuthenticateAPDU: APDUType {
 		finalSignature.append([signatureLength], count: 1)
 		finalSignature.append(signature)
 
-		self.signature = finalSignature as Data
+		self.signature = finalSignature
 		self.counter = counter
 		self.userPresenceFlag = userPresenceFlag
 
@@ -90,7 +87,7 @@ final class AuthenticateAPDU: APDUType {
 		onDebugMessage?(self, "Got counter = \(counter)")
 		onDebugMessage?(self, "Got user presence flag = \(userPresenceFlag)")
 		onDebugMessage?(self, "Got signature = \(finalSignature)")
-		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyAuthenticateSignature(APDU: self))")
+		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyAuthenticateSignature(self))")
 
 		return true
 	}

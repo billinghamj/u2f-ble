@@ -11,5 +11,5 @@ import Foundation
 protocol APDUType {
 	var onDebugMessage: ((APDUType, String) -> Void)? { get set }
 	func buildRequest() -> Data
-	func parseResponse(data: Data) -> Bool
+	func parseResponse(_ data: Data) -> Bool
 }

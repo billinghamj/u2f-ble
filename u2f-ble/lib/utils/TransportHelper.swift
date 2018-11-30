@@ -10,37 +10,37 @@ import Foundation
 
 final class TransportHelper {
 	enum CommandType: UInt8 {
-		case Ping = 0x81
-		case KeepAlive = 0x82
-		case Message = 0x83
-		case Error = 0xbf
+		case ping = 0x81
+		case keepAlive = 0x82
+		case message = 0x83
+		case error = 0xbf
 	}
 
 	enum ChunkType {
-		case Ping
-		case KeepAlive
-		case Message
-		case Error
-		case Continuation
-		case Unknown
+		case ping
+		case keepAlive
+		case message
+		case error
+		case continuation
+		case unknown
 	}
 
 	static func getChunkType(_ data: Data) -> ChunkType {
-		let reader = DataReader(data)
+		let reader = DataReader(data: data)
 		guard let byte = reader.readNextUInt8() else {
-			return .Unknown
+			return .unknown
 		}
 
 		if byte & 0x80 == 0 {
-			return .Continuation
+			return .continuation
 		}
 
 		switch byte {
-		case CommandType.Ping.rawValue: return .Ping
-		case CommandType.KeepAlive.rawValue: return .KeepAlive
-		case CommandType.Message.rawValue: return .Message
-		case CommandType.Error.rawValue: return .Error
-		default: return .Unknown
+		case CommandType.ping.rawValue: return .ping
+		case CommandType.keepAlive.rawValue: return .keepAlive
+		case CommandType.message.rawValue: return .message
+		case CommandType.error.rawValue: return .error
+		default: return .unknown
 		}
 	}
 
@@ -65,7 +65,7 @@ final class TransportHelper {
 				writer.writeNextUInt8(sequence)
 				length = min(chuncksize - 1, remainingLength)
 			}
-			writer.writeNextData(data.subdata(in: offset..<(length+offset)))
+			writer.writeNextData(data.subdata(in: offset..<(offset+length)))
 			remainingLength -= length
 			offset += length
 			chunks.append(writer.data)
@@ -84,7 +84,7 @@ final class TransportHelper {
 		var firstChunk = true
 
 		for chunk in chunks {
-			let reader = DataReader(chunk)
+			let reader = DataReader(data: chunk)
 
 			if firstChunk {
 				guard

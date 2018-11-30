@@ -9,7 +9,7 @@
 import Foundation
 
 final class DataReader {
-	private var internalData: Data
+	fileprivate var internalData: Data
 
 	var remainingBytesLength: Int {
 		return internalData.count
@@ -88,23 +88,22 @@ final class DataReader {
 
 	// MARK: Internal methods
 
-	private func readNextInteger<T: FixedWidthInteger>() -> T? {
+	fileprivate func readNextInteger<T: BinaryInteger>() -> T? {
 		guard let data = readNextDataOfLength(MemoryLayout<T>.size) else { return nil }
 
 		return data.withUnsafeBytes({ $0.pointee })
 	}
 
-	private func readNextInteger<T: FixedWidthInteger>(bigEndian: Bool) -> T? {
+	fileprivate func readNextInteger<T: FixedWidthInteger>(bigEndian: Bool) -> T? {
 		guard let data = readNextDataOfLength(MemoryLayout<T>.size) else { return nil }
 
 		let value: T = data.withUnsafeBytes({ $0.pointee })
-
 		return bigEndian ? value.bigEndian : value.littleEndian
 	}
 
 	// MARK: Initialization
 
-	init(_ data: Data) {
+	init(data: Data) {
 		self.internalData = data
 	}
 }
