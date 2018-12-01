@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class ViewController: UIViewController {
 	@IBOutlet fileprivate weak var loadingIndicator: UIActivityIndicatorView!
@@ -14,7 +15,6 @@ class ViewController: UIViewController {
 	@IBOutlet fileprivate weak var stopButton: UIButton!
 	@IBOutlet fileprivate weak var stateLabel: UILabel!
 	@IBOutlet fileprivate weak var nameLabel: UILabel!
-	@IBOutlet fileprivate weak var textView: UITextView!
 	@IBOutlet var actionButtons: [UIButton]!
 
 	fileprivate lazy var bluetoothManager: BluetoothManager = {
@@ -86,10 +86,6 @@ class ViewController: UIViewController {
 		}
 	}
 
-	@IBAction func clearLogs() {
-		textView.text = ""
-	}
-
 	// MARK: BluetoothManager
 
 	fileprivate func handleStateChanged(_ manager: BluetoothManager, state: BluetoothManagerState) {
@@ -126,11 +122,7 @@ class ViewController: UIViewController {
 	// MARK: User interface
 
 	fileprivate func appendLogMessage(_ message: String) {
-		textView.text = textView.text + "- \(message)\n"
-		let range = NSMakeRange(textView.text.count - 1, 1)
-		UIView.setAnimationsEnabled(false)
-		textView.scrollRangeToVisible(range)
-		UIView.setAnimationsEnabled(true)
+		os_log("%{public}@", message)
 	}
 
 	fileprivate func updateUI() {
@@ -146,7 +138,6 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		textView.layoutManager.allowsNonContiguousLayout = false
 		updateUI()
 	}
 }
