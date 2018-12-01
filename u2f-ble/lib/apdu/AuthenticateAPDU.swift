@@ -13,7 +13,6 @@ final class AuthenticateAPDU: APDUType {
 
 	let challenge: Data
 	let applicationParameter: Data
-	let checkOnly: Bool
 	let keyHandle: Data
 	let registerAPDU: RegisterAPDU
 	var onDebugMessage: ((APDUType, String) -> Void)?
@@ -21,21 +20,20 @@ final class AuthenticateAPDU: APDUType {
 	fileprivate(set) var counter: UInt32?
 	fileprivate(set) var signature: Data?
 
-	init?(registerAPDU: RegisterAPDU, challenge: Data, applicationParameter: Data, keyHandle: Data, checkOnly: Bool = false) {
+	init?(registerAPDU: RegisterAPDU, challenge: Data, applicationParameter: Data, keyHandle: Data) {
 		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
 
 		self.registerAPDU = registerAPDU
 		self.challenge = challenge
 		self.applicationParameter = applicationParameter
 		self.keyHandle = keyHandle
-		self.checkOnly = checkOnly
 	}
 
 	func buildRequest() -> Data {
 		let writer = DataWriter()
 		writer.writeNextUInt8(0x00) // cla
 		writer.writeNextUInt8(0x02) // ins
-		writer.writeNextUInt8(checkOnly ? 0x07 : 0x03) // p1
+		writer.writeNextUInt8(0x03) // p1
 		writer.writeNextUInt8(0x00) // p2
 		writer.writeNextUInt8(0x00) // 00
 		writer.writeNextUInt8(0x00) // l1
@@ -51,7 +49,6 @@ final class AuthenticateAPDU: APDUType {
 		onDebugMessage?(self, "Got challenge = \(challenge)")
 		onDebugMessage?(self, "Got application parameter = \(applicationParameter)")
 		onDebugMessage?(self, "Got key handle = \(keyHandle)")
-		onDebugMessage?(self, "Got check only = \(checkOnly)")
 		return writer.data
 	}
 

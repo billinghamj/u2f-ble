@@ -109,18 +109,8 @@
                                     <action selector="sendAuthenticate" destination="BYZ-38-t0r" eventType="touchUpInside" id="AD2-Hb-Wwp"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94x-nd-Ny7">
-                                <rect key="frame" x="20" y="191" width="165" height="34"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" title="AUTHENTICATE (CHECK)"/>
-                                <connections>
-                                    <action selector="sendAuthenticateCheck" destination="BYZ-38-t0r" eventType="touchUpInside" id="vpV-ad-nd4"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w1h-b2-oxR">
-                                <rect key="frame" x="190" y="191" width="165" height="34"/>
+                                <rect key="frame" x="20" y="191" width="335" height="34"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
@@ -157,23 +147,19 @@
                             <constraint firstItem="m9e-wY-71m" firstAttribute="top" secondItem="5IL-Nu-g0m" secondAttribute="bottom" constant="5" id="8Xq-zp-YnQ"/>
                             <constraint firstAttribute="trailing" secondItem="oi1-aW-v8U" secondAttribute="trailing" constant="20" id="9Zq-zU-HLi"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="width" secondItem="eyd-HX-wXP" secondAttribute="width" id="9sE-0n-V75"/>
-                            <constraint firstItem="94x-nd-Ny7" firstAttribute="width" secondItem="eyd-HX-wXP" secondAttribute="width" id="G2S-E1-82D"/>
                             <constraint firstItem="vxV-Cr-h0W" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="JPS-kg-8aX"/>
                             <constraint firstItem="eyd-HX-wXP" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="bottom" constant="20" id="LqX-me-XTj"/>
-                            <constraint firstItem="w1h-b2-oxR" firstAttribute="width" secondItem="eyd-HX-wXP" secondAttribute="width" id="OP1-yu-axD"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="trailing" secondItem="vxV-Cr-h0W" secondAttribute="trailing" id="QiV-GD-U19"/>
+                            <constraint firstItem="w1h-b2-oxR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="SID-hW-Tmu"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="bottom" constant="20" id="Z7R-lw-VKh"/>
                             <constraint firstAttribute="trailing" secondItem="w1h-b2-oxR" secondAttribute="trailing" constant="20" id="c1A-LX-YYZ"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="leading" secondItem="eyd-HX-wXP" secondAttribute="trailing" constant="5" id="cv8-ow-Sf1"/>
-                            <constraint firstItem="94x-nd-Ny7" firstAttribute="top" secondItem="eyd-HX-wXP" secondAttribute="bottom" constant="5" id="gVW-S3-mp1"/>
-                            <constraint firstItem="94x-nd-Ny7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="hFX-ux-l0S"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="hbM-lR-eJe"/>
                             <constraint firstAttribute="trailing" secondItem="vxV-Cr-h0W" secondAttribute="trailing" id="ijC-vF-YlX"/>
                             <constraint firstItem="vxV-Cr-h0W" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="q5W-ve-z73"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="top" secondItem="m9e-wY-71m" secondAttribute="bottom" constant="20" id="qIz-jK-K2e"/>
                             <constraint firstItem="m9e-wY-71m" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="rKr-hn-V3z"/>
                             <constraint firstItem="5IL-Nu-g0m" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="sN7-Yi-pBo"/>
-                            <constraint firstItem="w1h-b2-oxR" firstAttribute="leading" secondItem="94x-nd-Ny7" secondAttribute="trailing" constant="5" id="twA-F1-rGM"/>
                             <constraint firstItem="w1h-b2-oxR" firstAttribute="top" secondItem="oi1-aW-v8U" secondAttribute="bottom" constant="5" id="u9H-Il-x2o"/>
                             <constraint firstAttribute="trailing" secondItem="m9e-wY-71m" secondAttribute="trailing" constant="20" id="uK7-2n-cgj"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" id="ugK-wT-HKm"/>
@@ -189,7 +175,6 @@
                         <outlet property="textView" destination="7lW-rU-XfK" id="mMZ-OS-Mkb"/>
                         <outletCollection property="actionButtons" destination="eyd-HX-wXP" collectionClass="NSMutableArray" id="94o-wY-LUM"/>
                         <outletCollection property="actionButtons" destination="oi1-aW-v8U" collectionClass="NSMutableArray" id="9HF-aB-tSy"/>
-                        <outletCollection property="actionButtons" destination="94x-nd-Ny7" collectionClass="NSMutableArray" id="lr4-LC-Bgb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

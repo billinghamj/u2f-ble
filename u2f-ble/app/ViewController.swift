@@ -62,14 +62,6 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func sendAuthenticate() {
-		sendAuthenticate(checkOnly: false)
-	}
-
-	@IBAction func sendAuthenticateCheck() {
-		sendAuthenticate(checkOnly: true)
-	}
-
-	fileprivate func sendAuthenticate(checkOnly: Bool) {
 		guard
 			let registerAPDU = registerAPDU,
 			let originalKeyHandle = registerAPDU.keyHandle else {
@@ -100,7 +92,7 @@ class ViewController: UIViewController {
 		let challengeData = Data(bytes: challenge)
 		let applicationParameterData = Data(bytes: applicationParameter)
 
-		if let APDU = AuthenticateAPDU(registerAPDU: registerAPDU, challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandleData, checkOnly: checkOnly) {
+		if let APDU = AuthenticateAPDU(registerAPDU: registerAPDU, challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandleData) {
 			APDU.onDebugMessage = self.handleAPDUMessage
 			let data = APDU.buildRequest()
 			bluetoothManager.exchangeAPDU(data)
