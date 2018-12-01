@@ -126,7 +126,7 @@ final class RegisterAPDU: APDUType {
 		onDebugMessage?(self, "Got key handle = \(keyHandle)")
 		onDebugMessage?(self, "Got certificate = \(finalCertificate)")
 		onDebugMessage?(self, "Got signature = \(finalSignature)")
-		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyRegisterSignature(self))")
+
 		return true
 	}
 }

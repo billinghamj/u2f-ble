@@ -84,7 +84,6 @@ final class AuthenticateAPDU: APDUType {
 		onDebugMessage?(self, "Got counter = \(counter)")
 		onDebugMessage?(self, "Got user presence flag = \(userPresenceFlag)")
 		onDebugMessage?(self, "Got signature = \(finalSignature)")
-		onDebugMessage?(self, "Verifying signature ... \(CryptoHelper.verifyAuthenticateSignature(self))")
 
 		return true
 	}

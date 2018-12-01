@@ -15,12 +15,10 @@
 		1AF65D2E21AF3F25003ED163 /* DataWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2821AF3F25003ED163 /* DataWriter.swift */; };
 		1AF65D2F21AF3F25003ED163 /* CBManagerState+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */; };
 		1AF65D3121AF3F25003ED163 /* TransportHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */; };
-		1AF65D3221AF3F25003ED163 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2C21AF3F25003ED163 /* CryptoHelper.swift */; };
 		1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2D21AF3F25003ED163 /* DataReader.swift */; };
 		1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3421AF3FA1003ED163 /* AuthenticateAPDU.swift */; };
 		1AF65D3821AF3FA1003ED163 /* RegisterAPDU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3521AF3FA1003ED163 /* RegisterAPDU.swift */; };
 		1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3621AF3FA1003ED163 /* APDUType.swift */; };
-		1AF65D3D21B0B143003ED163 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3B21B0B143003ED163 /* Keychain.m */; };
 		1AF65D4121B0B42C003ED163 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3F21B0B42B003ED163 /* BluetoothManager.swift */; };
 		1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D4021B0B42C003ED163 /* DeviceManager.swift */; };
 		8B3A6E32CF69179A8453BA31 /* Pods_u2f_ble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF719148899860381C2045B /* Pods_u2f_ble.framework */; };
@@ -37,14 +35,11 @@
 		1AF65D2821AF3F25003ED163 /* DataWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataWriter.swift; sourceTree = "<group>"; };
 		1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+Additions.swift"; sourceTree = "<group>"; };
 		1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportHelper.swift; sourceTree = "<group>"; };
-		1AF65D2C21AF3F25003ED163 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		1AF65D2D21AF3F25003ED163 /* DataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
 		1AF65D3421AF3FA1003ED163 /* AuthenticateAPDU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateAPDU.swift; sourceTree = "<group>"; };
 		1AF65D3521AF3FA1003ED163 /* RegisterAPDU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAPDU.swift; sourceTree = "<group>"; };
 		1AF65D3621AF3FA1003ED163 /* APDUType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APDUType.swift; sourceTree = "<group>"; };
 		1AF65D3A21B0B142003ED163 /* u2f-ble-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "u2f-ble-Bridging-Header.h"; sourceTree = "<group>"; };
-		1AF65D3B21B0B143003ED163 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
-		1AF65D3C21B0B143003ED163 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		1AF65D3F21B0B42B003ED163 /* BluetoothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		1AF65D4021B0B42C003ED163 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7EF719148899860381C2045B /* Pods_u2f_ble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_u2f_ble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,11 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */,
-				1AF65D2C21AF3F25003ED163 /* CryptoHelper.swift */,
 				1AF65D2D21AF3F25003ED163 /* DataReader.swift */,
 				1AF65D2821AF3F25003ED163 /* DataWriter.swift */,
-				1AF65D3C21B0B143003ED163 /* Keychain.h */,
-				1AF65D3B21B0B143003ED163 /* Keychain.m */,
 				1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */,
 			);
 			path = utils;
@@ -292,8 +284,6 @@
 				1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */,
 				1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */,
 				1AF65D2F21AF3F25003ED163 /* CBManagerState+Additions.swift in Sources */,
-				1AF65D3D21B0B143003ED163 /* Keychain.m in Sources */,
-				1AF65D3221AF3F25003ED163 /* CryptoHelper.swift in Sources */,
 				1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */,
 				1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */,
 				1AF65D0F21AF3A0C003ED163 /* ViewController.swift in Sources */,
