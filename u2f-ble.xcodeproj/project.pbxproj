@@ -39,7 +39,6 @@
 		1AF65D3421AF3FA1003ED163 /* AuthenticateAPDU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateAPDU.swift; sourceTree = "<group>"; };
 		1AF65D3521AF3FA1003ED163 /* RegisterAPDU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterAPDU.swift; sourceTree = "<group>"; };
 		1AF65D3621AF3FA1003ED163 /* APDUType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APDUType.swift; sourceTree = "<group>"; };
-		1AF65D3A21B0B142003ED163 /* u2f-ble-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "u2f-ble-Bridging-Header.h"; sourceTree = "<group>"; };
 		1AF65D3F21B0B42B003ED163 /* BluetoothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		1AF65D4021B0B42C003ED163 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		7EF719148899860381C2045B /* Pods_u2f_ble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_u2f_ble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,7 +82,6 @@
 		1AF65D0B21AF3A0C003ED163 /* u2f-ble */ = {
 			isa = PBXGroup;
 			children = (
-				1AF65D3A21B0B142003ED163 /* u2f-ble-Bridging-Header.h */,
 				1AF65D1E21AF3DDE003ED163 /* lib */,
 				1AF65D1F21AF3DEE003ED163 /* app */,
 			);
@@ -448,7 +446,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "co.cuvva.u2f-ble";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "u2f-ble/u2f-ble-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -470,7 +467,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "co.cuvva.u2f-ble";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "u2f-ble/u2f-ble-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
