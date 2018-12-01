@@ -24,17 +24,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vxV-Cr-h0W">
                                 <rect key="frame" x="0.0" y="44" width="375" height="58"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VhI-U9-Bkp">
-                                        <rect key="frame" x="125" y="19" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-js-0cx">
-                                        <rect key="frame" x="20" y="20" width="42" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_state_" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eeq-FP-2BD">
-                                        <rect key="frame" x="70" y="19" width="47" height="18"/>
+                                        <rect key="frame" x="20" y="20" width="47" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -48,16 +39,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="eeq-FP-2BD" firstAttribute="leading" secondItem="Sq4-js-0cx" secondAttribute="trailing" constant="8" symbolic="YES" id="2C6-FG-gMN"/>
-                                    <constraint firstAttribute="bottom" secondItem="Sq4-js-0cx" secondAttribute="bottom" constant="20" id="2LQ-64-97M"/>
-                                    <constraint firstItem="VhI-U9-Bkp" firstAttribute="top" secondItem="eeq-FP-2BD" secondAttribute="top" id="FR4-jr-7tS"/>
-                                    <constraint firstItem="Sq4-js-0cx" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="20" id="IQq-tz-asn"/>
-                                    <constraint firstItem="Sq4-js-0cx" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" constant="20" id="LAn-8v-v57"/>
-                                    <constraint firstItem="VhI-U9-Bkp" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="19" id="Tav-Xa-RoN"/>
-                                    <constraint firstItem="VhI-U9-Bkp" firstAttribute="leading" secondItem="eeq-FP-2BD" secondAttribute="trailing" constant="8" symbolic="YES" id="u7C-CX-MtS"/>
-                                    <constraint firstItem="srC-vS-PRh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VhI-U9-Bkp" secondAttribute="trailing" constant="8" symbolic="YES" id="xiy-Wx-BeW"/>
+                                    <constraint firstAttribute="bottom" secondItem="eeq-FP-2BD" secondAttribute="bottom" constant="20" id="4lO-ST-jjx"/>
+                                    <constraint firstItem="srC-vS-PRh" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="20" id="Ra1-uh-B5g"/>
+                                    <constraint firstItem="eeq-FP-2BD" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="20" id="Zbl-TA-BIy"/>
+                                    <constraint firstAttribute="bottom" secondItem="srC-vS-PRh" secondAttribute="bottom" constant="20" id="fGf-p2-cv8"/>
+                                    <constraint firstItem="eeq-FP-2BD" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" constant="20" id="g26-rX-9ye"/>
+                                    <constraint firstItem="srC-vS-PRh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eeq-FP-2BD" secondAttribute="trailing" constant="8" symbolic="YES" id="qxh-J4-IK4"/>
                                     <constraint firstAttribute="trailing" secondItem="srC-vS-PRh" secondAttribute="trailing" constant="20" id="ydG-Ub-Wwz"/>
-                                    <constraint firstItem="srC-vS-PRh" firstAttribute="baseline" secondItem="Sq4-js-0cx" secondAttribute="baseline" id="zHt-jh-Muf"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyd-HX-wXP">
@@ -95,7 +83,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="loadingIndicator" destination="VhI-U9-Bkp" id="aJ3-Te-vd1"/>
                         <outlet property="nameLabel" destination="srC-vS-PRh" id="djf-Ex-6cj"/>
                         <outlet property="stateLabel" destination="eeq-FP-2BD" id="aLw-Ez-UgL"/>
                         <outletCollection property="actionButtons" destination="eyd-HX-wXP" collectionClass="NSMutableArray" id="94o-wY-LUM"/>

@@ -11,7 +11,6 @@ import UIKit
 import os.log
 
 class ViewController: UIViewController {
-	@IBOutlet fileprivate weak var loadingIndicator: UIActivityIndicatorView!
 	@IBOutlet fileprivate weak var stateLabel: UILabel!
 	@IBOutlet fileprivate weak var nameLabel: UILabel!
 	@IBOutlet var actionButtons: [UIButton]!
@@ -132,7 +131,6 @@ class ViewController: UIViewController {
 	}
 
 	fileprivate func updateUI() {
-		bluetoothManager.state == .Scanning ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
 		stateLabel.text = bluetoothManager.state.rawValue
 		nameLabel.isHidden = bluetoothManager.state != .Connected
 		nameLabel.text = bluetoothManager.deviceName
