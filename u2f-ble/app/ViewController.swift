@@ -43,9 +43,9 @@ class ViewController: UIViewController {
 		let challengeData = Data(bytes: challenge)
 		let applicationParameterData = Data(bytes: applicationParameter)
 
-		if let APDU = RegisterAPDU(challenge: challengeData, applicationParameter: applicationParameterData) {
-			APDU.onDebugMessage = self.handleAPDUMessage
-			currentAPDU = APDU
+		if let apdu = RegisterAPDU(challenge: challengeData, applicationParameter: applicationParameterData) {
+			apdu.onDebugMessage = self.handleAPDUMessage
+			currentAPDU = apdu
 			bluetoothManager.scanForDevice()
 		} else {
 			appendLogMessage("Unable to build REGISTER APDU")
@@ -74,9 +74,9 @@ class ViewController: UIViewController {
 		let challengeData = Data(bytes: challenge)
 		let applicationParameterData = Data(bytes: applicationParameter)
 
-		if let APDU = AuthenticateAPDU(challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandle) {
-			APDU.onDebugMessage = self.handleAPDUMessage
-			currentAPDU = APDU
+		if let apdu = AuthenticateAPDU(challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandle) {
+			apdu.onDebugMessage = self.handleAPDUMessage
+			currentAPDU = apdu
 			bluetoothManager.scanForDevice()
 		} else {
 			appendLogMessage("Unable to build AUTHENTICATE APDU")

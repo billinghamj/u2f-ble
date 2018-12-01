@@ -116,10 +116,10 @@ final class DeviceManager: NSObject {
 
 		// join APDU
 		pendingInput.append(chunk)
-		if let APDU = TransportHelper.join(pendingInput, command: .message) {
-			onDebugMessage?(self, "Successfully joined APDU = \(APDU)")
+		if let apdu = TransportHelper.join(pendingInput, command: .message) {
+			onDebugMessage?(self, "Successfully joined APDU = \(apdu)")
 			pendingInput.removeAll()
-			onAPDUReceived?(self, APDU)
+			onAPDUReceived?(self, apdu)
 		}
 	}
 
