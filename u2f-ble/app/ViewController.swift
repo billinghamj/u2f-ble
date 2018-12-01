@@ -24,8 +24,6 @@ class ViewController: UIViewController {
 		manager.onReceivedAPDU = self.handleReceivedAPDU
 		return manager
 	}()
-	fileprivate var useInvalidApplicationParameter = true
-	fileprivate var useInvalidKeyHandle = true
 	fileprivate var currentAPDU: APDUType? = nil
 	fileprivate var registerAPDU: RegisterAPDU? = nil
 
@@ -64,30 +62,17 @@ class ViewController: UIViewController {
 	@IBAction func sendAuthenticate() {
 		guard
 			let registerAPDU = registerAPDU,
-			let originalKeyHandle = registerAPDU.keyHandle else {
+			let keyHandleData = registerAPDU.keyHandle else {
 				appendLogMessage("Unable to build AUTHENTICATE APDU, not yet REGISTERED")
 				return
 		}
 
 		var challenge: [UInt8] = []
 		var applicationParameter: [UInt8] = []
-		let keyHandleData: Data
 
 		for i in 0..<32 {
 			challenge.append(UInt8(i) | 0x10)
 			applicationParameter.append(UInt8(i) | 0x80)
-		}
-		if useInvalidApplicationParameter {
-			applicationParameter[0] = 0xFF
-		}
-		if useInvalidKeyHandle {
-			var data = originalKeyHandle
-			data.replaceSubrange(0..<2, with: [0xFF, 0xFF] as [UInt8], count: 2)
-			data.replaceSubrange((data.count - 1)..<data.count, with: [0xFF] as [UInt8], count: 1)
-			keyHandleData = data
-		}
-		else {
-			keyHandleData = originalKeyHandle
 		}
 		let challengeData = Data(bytes: challenge)
 		let applicationParameterData = Data(bytes: applicationParameter)
@@ -101,16 +86,6 @@ class ViewController: UIViewController {
 		else {
 			appendLogMessage("Unable to build AUTHENTICATE APDU")
 		}
-	}
-
-	@IBAction func toggleApplicationParameter() {
-		useInvalidApplicationParameter = !useInvalidApplicationParameter
-		appendLogMessage("Use invalid application parameter = \(useInvalidApplicationParameter)")
-	}
-
-	@IBAction func toggleKeyHandle() {
-		useInvalidKeyHandle = !useInvalidKeyHandle
-		appendLogMessage("Use invalid key handle = \(useInvalidKeyHandle)")
 	}
 
 	@IBAction func clearLogs() {
@@ -175,7 +150,5 @@ class ViewController: UIViewController {
 
 		textView.layoutManager.allowsNonContiguousLayout = false
 		updateUI()
-		toggleApplicationParameter()
-		toggleKeyHandle()
 	}
 }

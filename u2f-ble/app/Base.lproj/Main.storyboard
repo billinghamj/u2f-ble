@@ -85,7 +85,7 @@
                                 </constraints>
                             </view>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7lW-rU-XfK">
-                                <rect key="frame" x="0.0" y="323" width="375" height="455"/>
+                                <rect key="frame" x="0.0" y="245" width="375" height="533"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -119,51 +119,25 @@
                                     <action selector="clearLogs" destination="BYZ-38-t0r" eventType="touchUpInside" id="C88-vr-2E8"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5IL-Nu-g0m">
-                                <rect key="frame" x="20" y="230" width="335" height="34"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" title="TOGGLE APPLICATION PARAMETERS"/>
-                                <connections>
-                                    <action selector="toggleApplicationParameter" destination="BYZ-38-t0r" eventType="touchUpInside" id="kjK-HG-C6Q"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9e-wY-71m">
-                                <rect key="frame" x="20" y="269" width="335" height="34"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" title="TOGGLE KEY HANDLE"/>
-                                <connections>
-                                    <action selector="toggleKeyHandle" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fxr-Td-Ot9"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="eyd-HX-wXP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="4MQ-3W-AhV"/>
-                            <constraint firstAttribute="trailing" secondItem="5IL-Nu-g0m" secondAttribute="trailing" constant="20" id="78i-Cu-quw"/>
-                            <constraint firstItem="m9e-wY-71m" firstAttribute="top" secondItem="5IL-Nu-g0m" secondAttribute="bottom" constant="5" id="8Xq-zp-YnQ"/>
                             <constraint firstAttribute="trailing" secondItem="oi1-aW-v8U" secondAttribute="trailing" constant="20" id="9Zq-zU-HLi"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="width" secondItem="eyd-HX-wXP" secondAttribute="width" id="9sE-0n-V75"/>
                             <constraint firstItem="vxV-Cr-h0W" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="JPS-kg-8aX"/>
                             <constraint firstItem="eyd-HX-wXP" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="bottom" constant="20" id="LqX-me-XTj"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="trailing" secondItem="vxV-Cr-h0W" secondAttribute="trailing" id="QiV-GD-U19"/>
                             <constraint firstItem="w1h-b2-oxR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="SID-hW-Tmu"/>
+                            <constraint firstItem="7lW-rU-XfK" firstAttribute="top" secondItem="w1h-b2-oxR" secondAttribute="bottom" constant="20" id="ToV-u6-vPJ"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="bottom" constant="20" id="Z7R-lw-VKh"/>
                             <constraint firstAttribute="trailing" secondItem="w1h-b2-oxR" secondAttribute="trailing" constant="20" id="c1A-LX-YYZ"/>
                             <constraint firstItem="oi1-aW-v8U" firstAttribute="leading" secondItem="eyd-HX-wXP" secondAttribute="trailing" constant="5" id="cv8-ow-Sf1"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="hbM-lR-eJe"/>
                             <constraint firstAttribute="trailing" secondItem="vxV-Cr-h0W" secondAttribute="trailing" id="ijC-vF-YlX"/>
                             <constraint firstItem="vxV-Cr-h0W" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="q5W-ve-z73"/>
-                            <constraint firstItem="7lW-rU-XfK" firstAttribute="top" secondItem="m9e-wY-71m" secondAttribute="bottom" constant="20" id="qIz-jK-K2e"/>
-                            <constraint firstItem="m9e-wY-71m" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="rKr-hn-V3z"/>
-                            <constraint firstItem="5IL-Nu-g0m" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="sN7-Yi-pBo"/>
                             <constraint firstItem="w1h-b2-oxR" firstAttribute="top" secondItem="oi1-aW-v8U" secondAttribute="bottom" constant="5" id="u9H-Il-x2o"/>
-                            <constraint firstAttribute="trailing" secondItem="m9e-wY-71m" secondAttribute="trailing" constant="20" id="uK7-2n-cgj"/>
                             <constraint firstItem="7lW-rU-XfK" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" id="ugK-wT-HKm"/>
-                            <constraint firstItem="5IL-Nu-g0m" firstAttribute="top" secondItem="w1h-b2-oxR" secondAttribute="bottom" constant="5" id="yWr-gp-gMr"/>
                         </constraints>
                     </view>
                     <connections>
