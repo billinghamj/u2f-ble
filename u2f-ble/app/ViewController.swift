@@ -25,7 +25,7 @@ class ViewController: UIViewController {
 		return manager
 	}()
 	fileprivate var currentAPDU: APDUType? = nil
-	fileprivate var registerAPDU: RegisterAPDU? = nil
+	fileprivate var keyHandle: Data? = nil
 
 	// MARK: Actions
 
@@ -60,9 +60,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func sendAuthenticate() {
-		guard
-			let registerAPDU = registerAPDU,
-			let keyHandleData = registerAPDU.keyHandle else {
+		guard let keyHandle = keyHandle else {
 				appendLogMessage("Unable to build AUTHENTICATE APDU, not yet REGISTERED")
 				return
 		}
@@ -109,8 +107,8 @@ class ViewController: UIViewController {
 	fileprivate func handleReceivedAPDU(_ manager: BluetoothManager, data: Data) {
 		if let success = currentAPDU?.parseResponse(data), success {
 			appendLogMessage("Successfully parsed APDU response of kind \(currentAPDU as APDUType?)")
-			if currentAPDU is RegisterAPDU {
-				registerAPDU = currentAPDU as? RegisterAPDU
+			if let currentAPDU = currentAPDU as? RegisterAPDU {
+				keyHandle = currentAPDU.keyHandle
 			}
 		}
 		else {
