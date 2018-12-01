@@ -75,7 +75,7 @@ class ViewController: UIViewController {
 		let challengeData = Data(bytes: challenge)
 		let applicationParameterData = Data(bytes: applicationParameter)
 
-		if let APDU = AuthenticateAPDU(registerAPDU: registerAPDU, challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandleData) {
+		if let APDU = AuthenticateAPDU(challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandle) {
 			APDU.onDebugMessage = self.handleAPDUMessage
 			let data = APDU.buildRequest()
 			bluetoothManager.exchangeAPDU(data)

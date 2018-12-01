@@ -14,16 +14,14 @@ final class AuthenticateAPDU: APDUType {
 	let challenge: Data
 	let applicationParameter: Data
 	let keyHandle: Data
-	let registerAPDU: RegisterAPDU
 	var onDebugMessage: ((APDUType, String) -> Void)?
 	fileprivate(set) var userPresenceFlag: UInt8?
 	fileprivate(set) var counter: UInt32?
 	fileprivate(set) var signature: Data?
 
-	init?(registerAPDU: RegisterAPDU, challenge: Data, applicationParameter: Data, keyHandle: Data) {
+	init?(challenge: Data, applicationParameter: Data, keyHandle: Data) {
 		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
 
-		self.registerAPDU = registerAPDU
 		self.challenge = challenge
 		self.applicationParameter = applicationParameter
 		self.keyHandle = keyHandle
