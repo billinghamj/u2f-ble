@@ -46,9 +46,11 @@ final class DeviceManager: NSObject {
 	}
 
 	func bindForReadWrite() {
-		guard state == .NotBound else {
-			onDebugMessage?(self, "Trying to bind but alreay busy")
-			return
+		guard
+			state == .NotBound
+			else {
+				onDebugMessage?(self, "Trying to bind but alreay busy")
+				return
 		}
 
 		// discover services
@@ -59,28 +61,31 @@ final class DeviceManager: NSObject {
 	}
 
 	func exchangeAPDU(_ data: Data) {
-		guard state == .Bound else {
-			onDebugMessage?(self, "Trying to send APDU \(data) but not bound yet")
-			return
+		guard
+			state == .Bound
+			else {
+				onDebugMessage?(self, "Trying to send APDU \(data) but not bound yet")
+				return
 		}
 
 		// slice APDU
 		onDebugMessage?(self, "Trying to split APDU into chunks...")
-		if let chunks = TransportHelper.split(data, command: .message, chuncksize: chunksize), chunks.count > 0 {
+		if let chunks = TransportHelper.split(data, command: .message, chunksize: chunksize), chunks.count > 0 {
 			onDebugMessage?(self, "Successfully split APDU into \(chunks.count) part(s)")
 			pendingOutput = chunks
 			writeNextPendingChunk()
-		}
-		else {
+		} else {
 			onDebugMessage?(self, "Unable to split APDU into chunks")
 			resetState()
 		}
 	}
 
 	fileprivate func writeNextPendingChunk() {
-		guard pendingOutput.count > 0 else {
-			onDebugMessage?(self, "Trying to write pending chunk but nothing left to write")
-			return
+		guard
+			pendingOutput.count > 0
+			else {
+				onDebugMessage?(self, "Trying to write pending chunk but nothing left to write")
+				return
 		}
 
 		let chunk = pendingOutput.removeFirst()
@@ -128,7 +133,10 @@ final class DeviceManager: NSObject {
 
 extension DeviceManager: CBPeripheralDelegate {
 	func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-		guard state == .Binding else { return }
+		guard
+			state == .Binding
+			else { return }
+
 		guard
 			let services = peripheral.services, services.count > 0,
 			let service = services.first
@@ -148,7 +156,10 @@ extension DeviceManager: CBPeripheralDelegate {
 	}
 
 	func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-		guard state == .Binding else { return }
+		guard
+			state == .Binding
+			else { return }
+
 		guard
 			let characteristics = service.characteristics, characteristics.count >= 3,
 			let writeCharacteristic = characteristics.filter({ $0.uuid.uuidString == type(of: self).writeCharacteristicUUID }).first,
@@ -172,11 +183,16 @@ extension DeviceManager: CBPeripheralDelegate {
 	}
 
 	func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-		guard state == .Binding else { return }
-		guard characteristic == notifyCharacteristic && characteristic.isNotifying && error == nil else {
-			onDebugMessage?(self, "Unable to enable notifications, error = \(error as Error?)")
-			resetState()
-			return
+		guard
+			state == .Binding
+			else { return }
+
+		guard
+			characteristic == notifyCharacteristic && characteristic.isNotifying && error == nil
+			else {
+				onDebugMessage?(self, "Unable to enable notifications, error = \(error as Error?)")
+				resetState()
+				return
 		}
 
 		// ask for chunksize
@@ -186,7 +202,10 @@ extension DeviceManager: CBPeripheralDelegate {
 	}
 
 	func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-		guard state == .Bound || state == .Binding else { return }
+		guard
+			state == .Bound || state == .Binding
+			else { return }
+
 		guard
 			(characteristic == notifyCharacteristic || characteristic == controlpointLengthCharacteristic) && error == nil,
 			let data = characteristic.value
@@ -202,33 +221,38 @@ extension DeviceManager: CBPeripheralDelegate {
 		if characteristic == controlpointLengthCharacteristic {
 			// extract chunksize
 			let reader = DataReader(data: data)
-			guard let chunksize = reader.readNextBigEndianUInt16() else {
-				onDebugMessage?(self, "Unable to read chunksize")
-				resetState()
-				return
+			guard
+				let chunksize = reader.readNextBigEndianUInt16()
+				else {
+					onDebugMessage?(self, "Unable to read chunksize")
+					resetState()
+					return
 			}
 
 			// successfully bound
-			onDebugMessage?(self, "Successfully read chuncksize = \(chunksize)")
+			onDebugMessage?(self, "Successfully read chunksize = \(chunksize)")
 			self.chunksize = Int(chunksize)
 			state = .Bound
-		}
-		else if characteristic == notifyCharacteristic {
+		} else if characteristic == notifyCharacteristic {
 			// handle received data
 			handleReceivedChunk(data)
-		}
-		else {
+		} else {
 			// unknown characteristic
 			onDebugMessage?(self, "Received data from unknown characteristic, ignoring")
 		}
 	}
 
 	func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-		guard state == .Bound else { return }
-		guard characteristic == writeCharacteristic && error == nil else {
-			onDebugMessage?(self, "Unable to write data, error = \(error as Error?)")
-			resetState()
-			return
+		guard
+			state == .Bound
+			else { return }
+
+		guard
+			characteristic == writeCharacteristic && error == nil
+			else {
+				onDebugMessage?(self, "Unable to write data, error = \(error as Error?)")
+				resetState()
+				return
 		}
 
 		// write pending chunks

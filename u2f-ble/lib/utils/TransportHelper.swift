@@ -27,9 +27,9 @@ final class TransportHelper {
 
 	static func getChunkType(_ data: Data) -> ChunkType {
 		let reader = DataReader(data: data)
-		guard let byte = reader.readNextUInt8() else {
-			return .unknown
-		}
+		guard
+			let byte = reader.readNextUInt8()
+			else { return .unknown }
 
 		if byte & 0x80 == 0 {
 			return .continuation
@@ -44,8 +44,11 @@ final class TransportHelper {
 		}
 	}
 
-	static func split(_ data: Data, command: CommandType, chuncksize: Int) -> [Data]? {
-		guard chuncksize >= 8 && data.count > 0 && data.count <= Int(UInt16.max) else { return nil }
+	static func split(_ data: Data, command: CommandType, chunksize: Int) -> [Data]? {
+		guard
+			chunksize >= 8 && data.count > 0 && data.count <= Int(UInt16.max)
+			else { return nil }
+		
 		var chunks: [Data] = []
 		var remainingLength = data.count
 		var firstChunk = true
@@ -59,11 +62,10 @@ final class TransportHelper {
 			if firstChunk {
 				writer.writeNextUInt8(command.rawValue)
 				writer.writeNextBigEndianUInt16(UInt16(remainingLength))
-				length = min(chuncksize - 3, remainingLength)
-			}
-			else {
+				length = min(chunksize - 3, remainingLength)
+			} else {
 				writer.writeNextUInt8(sequence)
-				length = min(chuncksize - 1, remainingLength)
+				length = min(chunksize - 1, remainingLength)
 			}
 			writer.writeNextData(data.subdata(in: offset..<(offset+length)))
 			remainingLength -= length
@@ -91,20 +93,17 @@ final class TransportHelper {
 					let readCommand = reader.readNextUInt8(),
 					let readLength = reader.readNextBigEndianUInt16(),
 					readCommand == command.rawValue
-					else
-				{ return nil }
+					else { return nil }
 
 				length = Int(readLength)
 				writer.writeNextData(chunk.subdata(in: 3..<chunk.count))
 				length -= chunk.count - 3
 				firstChunk = false
-			}
-			else {
+			} else {
 				guard
 					let readSequence = reader.readNextUInt8(),
 					readSequence == sequence
-					else
-				{ return nil }
+					else { return nil }
 
 				writer.writeNextData(chunk.subdata(in: 1..<chunk.count))
 				length -= chunk.count - 1

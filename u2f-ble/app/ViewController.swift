@@ -48,14 +48,15 @@ class ViewController: UIViewController {
 			let data = APDU.buildRequest()
 			bluetoothManager.exchangeAPDU(data)
 			currentAPDU = APDU
-		}
-		else {
+		} else {
 			appendLogMessage("Unable to build REGISTER APDU")
 		}
 	}
 
 	@IBAction func sendAuthenticate() {
-		guard let keyHandle = keyHandle else {
+		guard
+			let keyHandle = keyHandle
+			else {
 				appendLogMessage("Unable to build AUTHENTICATE APDU, not yet REGISTERED")
 				return
 		}
@@ -75,8 +76,7 @@ class ViewController: UIViewController {
 			let data = APDU.buildRequest()
 			bluetoothManager.exchangeAPDU(data)
 			currentAPDU = APDU
-		}
-		else {
+		} else {
 			appendLogMessage("Unable to build AUTHENTICATE APDU")
 		}
 	}
@@ -101,8 +101,7 @@ class ViewController: UIViewController {
 			if let currentAPDU = currentAPDU as? RegisterAPDU {
 				keyHandle = currentAPDU.keyHandle
 			}
-		}
-		else {
+		} else {
 			appendLogMessage("Failed to parse APDU response of kind \(type(of: currentAPDU as APDUType?))")
 		}
 		currentAPDU = nil

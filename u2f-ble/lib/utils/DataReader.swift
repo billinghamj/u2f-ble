@@ -78,8 +78,13 @@ final class DataReader {
 	}
 
 	func readNextDataOfLength(_ length: Int) -> Data? {
-		guard length > 0 else { return nil }
-		guard internalData.count >= length else { return nil }
+		guard
+			length > 0
+			else { return nil }
+
+		guard
+			internalData.count >= length
+			else { return nil }
 
 		let data = internalData.subdata(in: 0..<length)
 		internalData.removeSubrange(0..<length)
@@ -89,13 +94,17 @@ final class DataReader {
 	// MARK: Internal methods
 
 	fileprivate func readNextInteger<T: BinaryInteger>() -> T? {
-		guard let data = readNextDataOfLength(MemoryLayout<T>.size) else { return nil }
+		guard
+			let data = readNextDataOfLength(MemoryLayout<T>.size)
+			else { return nil }
 
 		return data.withUnsafeBytes({ $0.pointee })
 	}
 
 	fileprivate func readNextInteger<T: FixedWidthInteger>(bigEndian: Bool) -> T? {
-		guard let data = readNextDataOfLength(MemoryLayout<T>.size) else { return nil }
+		guard
+			let data = readNextDataOfLength(MemoryLayout<T>.size)
+			else { return nil }
 
 		let value: T = data.withUnsafeBytes({ $0.pointee })
 		return bigEndian ? value.bigEndian : value.littleEndian

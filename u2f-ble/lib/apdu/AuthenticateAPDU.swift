@@ -20,7 +20,9 @@ final class AuthenticateAPDU: APDUType {
 	fileprivate(set) var signature: Data?
 
 	init?(challenge: Data, applicationParameter: Data, keyHandle: Data) {
-		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
+		guard
+			challenge.count == 32 && applicationParameter.count == 32
+			else { return nil }
 
 		self.challenge = challenge
 		self.applicationParameter = applicationParameter
@@ -57,18 +59,19 @@ final class AuthenticateAPDU: APDUType {
 		guard
 			let userPresenceFlag = reader.readNextUInt8(),
 			let counter = reader.readNextBigEndianUInt32()
-			else {
-				return false
-		}
+			else { return false }
 
 		// signature
-		guard let derSequence = reader.readNextUInt8(), derSequence == type(of: self).derSeqByte else { return false }
+		guard
+			let derSequence = reader.readNextUInt8(),
+			derSequence == type(of: self).derSeqByte
+			else { return false }
+
 		guard
 			let signatureLength = reader.readNextUInt8(),
 			let signature = reader.readNextDataOfLength(Int(signatureLength))
-			else {
-				return false
-		}
+			else { return false }
+
 		var finalSignature = Data()
 		finalSignature.append([derSequence], count: 1)
 		finalSignature.append([signatureLength], count: 1)

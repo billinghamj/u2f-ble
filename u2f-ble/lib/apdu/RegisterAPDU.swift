@@ -23,7 +23,9 @@ final class RegisterAPDU: APDUType {
 	fileprivate(set) var signature: Data?
 
 	init?(challenge: Data, applicationParameter: Data) {
-		guard challenge.count == 32 && applicationParameter.count == 32 else { return nil }
+		guard
+			challenge.count == 32 && applicationParameter.count == 32
+			else { return nil }
 
 		self.challenge = challenge
 		self.applicationParameter = applicationParameter
@@ -57,60 +59,65 @@ final class RegisterAPDU: APDUType {
 			let reservedByte = reader.readNextUInt8(),
 			let publicKey = reader.readNextDataOfLength(65),
 			reservedByte == type(of: self).reservedByte
-			else {
-				return false
-		}
+			else { return false }
 
 		// key handle
 		guard
 			let keyHandleLength = reader.readNextUInt8(),
 			let keyHandle = reader.readNextDataOfLength(Int(keyHandleLength))
-			else {
-				return false
-		}
+			else { return false }
 
 		// certificate
-		guard let derSequence1 = reader.readNextUInt8(), derSequence1 == type(of: self).derSeqByte else { return false }
-		guard let derCertificateLengthKind = reader.readNextUInt8() else { return false }
+		guard
+			let derSequence1 = reader.readNextUInt8(),
+			derSequence1 == type(of: self).derSeqByte
+			else { return false }
+
+		guard
+			let derCertificateLengthKind = reader.readNextUInt8()
+			else { return false }
 
 		var certificateLength = 0
 		if derCertificateLengthKind == type(of: self).derLen1Byte {
-			guard let readLength = reader.readNextUInt8() else { return false }
+			guard
+				let readLength = reader.readNextUInt8()
+				else { return false }
 			certificateLength = Int(readLength)
-		}
-		else if derCertificateLengthKind == type(of: self).derLen2Byte {
-			guard let readLength = reader.readNextBigEndianUInt16() else { return false }
+		} else if derCertificateLengthKind == type(of: self).derLen2Byte {
+			guard
+				let readLength = reader.readNextBigEndianUInt16()
+				else { return false }
 			certificateLength = Int(readLength)
-		}
-		else {
+		} else {
 			return false
 		}
 
 		guard
 			let certificate = reader.readNextDataOfLength(certificateLength)
-			else {
-				return false
-		}
+			else { return false }
+
 		let writer = DataWriter()
 		writer.writeNextUInt8(derSequence1)
 		writer.writeNextUInt8(derCertificateLengthKind)
 		if derCertificateLengthKind == type(of: self).derLen1Byte {
 			writer.writeNextUInt8(UInt8(certificateLength))
-		}
-		else if derCertificateLengthKind == type(of: self).derLen2Byte {
+		} else if derCertificateLengthKind == type(of: self).derLen2Byte {
 			writer.writeNextBigEndianUInt16(UInt16(certificateLength))
 		}
 		writer.writeNextData(certificate)
 		let finalCertificate = writer.data
 
 		// signature
-		guard let derSequence2 = reader.readNextUInt8(), derSequence2 == type(of: self).derSeqByte else { return false }
+		guard
+			let derSequence2 = reader.readNextUInt8(),
+			derSequence2 == type(of: self).derSeqByte
+			else { return false }
+
 		guard
 			let signatureLength = reader.readNextUInt8(),
 			let signature = reader.readNextDataOfLength(Int(signatureLength))
-			else {
-				return false
-		}
+			else { return false }
+
 		var finalSignature = Data()
 		finalSignature.append([derSequence2], count: 1)
 		finalSignature.append([signatureLength], count: 1)
