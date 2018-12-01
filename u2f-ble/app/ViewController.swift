@@ -12,7 +12,6 @@ import os.log
 
 class ViewController: UIViewController {
 	@IBOutlet fileprivate weak var loadingIndicator: UIActivityIndicatorView!
-	@IBOutlet fileprivate weak var scanButton: UIButton!
 	@IBOutlet fileprivate weak var stateLabel: UILabel!
 	@IBOutlet fileprivate weak var nameLabel: UILabel!
 	@IBOutlet var actionButtons: [UIButton]!
@@ -29,11 +28,11 @@ class ViewController: UIViewController {
 
 	// MARK: Actions
 
-	@IBAction func scanForDevice() {
-		bluetoothManager.scanForDevice()
-	}
-
 	@IBAction func sendRegister() {
+		guard
+			bluetoothManager.state == .Disconnected
+			else { return }
+
 		var challenge: [UInt8] = []
 		var applicationParameter: [UInt8] = []
 
@@ -46,15 +45,18 @@ class ViewController: UIViewController {
 
 		if let APDU = RegisterAPDU(challenge: challengeData, applicationParameter: applicationParameterData) {
 			APDU.onDebugMessage = self.handleAPDUMessage
-			let data = APDU.buildRequest()
-			bluetoothManager.exchangeAPDU(data)
 			currentAPDU = APDU
+			bluetoothManager.scanForDevice()
 		} else {
 			appendLogMessage("Unable to build REGISTER APDU")
 		}
 	}
 
 	@IBAction func sendAuthenticate() {
+		guard
+			bluetoothManager.state == .Disconnected
+			else { return }
+
 		guard
 			let keyHandle = keyHandle
 			else {
@@ -74,9 +76,8 @@ class ViewController: UIViewController {
 
 		if let APDU = AuthenticateAPDU(challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandle) {
 			APDU.onDebugMessage = self.handleAPDUMessage
-			let data = APDU.buildRequest()
-			bluetoothManager.exchangeAPDU(data)
 			currentAPDU = APDU
+			bluetoothManager.scanForDevice()
 		} else {
 			appendLogMessage("Unable to build AUTHENTICATE APDU")
 		}
@@ -87,8 +88,16 @@ class ViewController: UIViewController {
 	fileprivate func handleStateChanged(_ manager: BluetoothManager, state: BluetoothManagerState) {
 		updateUI()
 
-		if state == .Disconnected {
+		switch state {
+		case .Connected:
+			guard
+				let data = currentAPDU?.buildRequest()
+				else { return }
+			bluetoothManager.exchangeAPDU(data)
+		case .Disconnected:
 			currentAPDU = nil
+		default:
+			return
 		}
 	}
 
@@ -105,7 +114,6 @@ class ViewController: UIViewController {
 		} else {
 			appendLogMessage("Failed to parse APDU response of kind \(type(of: currentAPDU as APDUType?))")
 		}
-		currentAPDU = nil
 		if bluetoothManager.state == .Connecting || bluetoothManager.state == .Connected || bluetoothManager.state == .Scanning {
 			bluetoothManager.stopSession()
 		}
@@ -126,10 +134,9 @@ class ViewController: UIViewController {
 	fileprivate func updateUI() {
 		bluetoothManager.state == .Scanning ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
 		stateLabel.text = bluetoothManager.state.rawValue
-		scanButton.isEnabled = bluetoothManager.state == .Disconnected
 		nameLabel.isHidden = bluetoothManager.state != .Connected
 		nameLabel.text = bluetoothManager.deviceName
-		actionButtons.forEach() { $0.isEnabled = bluetoothManager.state == .Connected }
+		actionButtons.forEach() { $0.isEnabled = bluetoothManager.state == .Disconnected }
 	}
 
 	override func viewDidLoad() {
