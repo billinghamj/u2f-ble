@@ -13,7 +13,6 @@
 		1AF65D1421AF3A0D003ED163 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AF65D1321AF3A0D003ED163 /* Assets.xcassets */; };
 		1AF65D1721AF3A0D003ED163 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF65D1521AF3A0D003ED163 /* LaunchScreen.storyboard */; };
 		1AF65D2E21AF3F25003ED163 /* DataWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2821AF3F25003ED163 /* DataWriter.swift */; };
-		1AF65D2F21AF3F25003ED163 /* CBManagerState+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */; };
 		1AF65D3121AF3F25003ED163 /* TransportHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */; };
 		1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D2D21AF3F25003ED163 /* DataReader.swift */; };
 		1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3421AF3FA1003ED163 /* AuthenticateAPDU.swift */; };
@@ -32,7 +31,6 @@
 		1AF65D1621AF3A0D003ED163 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AF65D1821AF3A0D003ED163 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1AF65D2821AF3F25003ED163 /* DataWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataWriter.swift; sourceTree = "<group>"; };
-		1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+Additions.swift"; sourceTree = "<group>"; };
 		1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportHelper.swift; sourceTree = "<group>"; };
 		1AF65D2D21AF3F25003ED163 /* DataReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
 		1AF65D3421AF3FA1003ED163 /* AuthenticateAPDU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateAPDU.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 		1AF65D2721AF3EF2003ED163 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				1AF65D2921AF3F25003ED163 /* CBManagerState+Additions.swift */,
 				1AF65D2D21AF3F25003ED163 /* DataReader.swift */,
 				1AF65D2821AF3F25003ED163 /* DataWriter.swift */,
 				1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */,
@@ -208,7 +205,6 @@
 			files = (
 				1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */,
 				1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */,
-				1AF65D2F21AF3F25003ED163 /* CBManagerState+Additions.swift in Sources */,
 				1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */,
 				1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */,
 				1AF65D0F21AF3A0C003ED163 /* ViewController.swift in Sources */,
