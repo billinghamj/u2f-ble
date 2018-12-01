@@ -34,18 +34,6 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VhI-U9-Bkp">
                                         <rect key="frame" x="125" y="19" width="20" height="20"/>
                                     </activityIndicatorView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IRJ-g2-OBZ">
-                                        <rect key="frame" x="267" y="38" width="88" height="30"/>
-                                        <state key="normal" title="Stop session">
-                                            <color key="titleColor" red="0.93046465968586389" green="0.0" blue="0.038192731337094006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="disabled">
-                                            <color key="titleColor" red="0.78450179973821987" green="0.78450179973821987" blue="0.78450179973821987" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="stopSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="umo-CM-q7z"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-js-0cx">
                                         <rect key="frame" x="20" y="20" width="42" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -68,19 +56,17 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="eeq-FP-2BD" firstAttribute="leading" secondItem="Sq4-js-0cx" secondAttribute="trailing" constant="8" symbolic="YES" id="2C6-FG-gMN"/>
-                                    <constraint firstItem="IRJ-g2-OBZ" firstAttribute="baseline" secondItem="oPH-31-5dR" secondAttribute="baseline" id="5Px-N3-o30"/>
                                     <constraint firstItem="VhI-U9-Bkp" firstAttribute="top" secondItem="eeq-FP-2BD" secondAttribute="top" id="FR4-jr-7tS"/>
                                     <constraint firstItem="Sq4-js-0cx" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="20" id="IQq-tz-asn"/>
                                     <constraint firstItem="Sq4-js-0cx" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" constant="20" id="LAn-8v-v57"/>
                                     <constraint firstItem="VhI-U9-Bkp" firstAttribute="top" secondItem="vxV-Cr-h0W" secondAttribute="top" constant="19" id="Tav-Xa-RoN"/>
                                     <constraint firstAttribute="bottom" secondItem="oPH-31-5dR" secondAttribute="bottom" constant="20" id="atU-Kb-Nmx"/>
-                                    <constraint firstItem="srC-vS-PRh" firstAttribute="trailing" secondItem="IRJ-g2-OBZ" secondAttribute="trailing" id="cNd-mg-O0R"/>
-                                    <constraint firstAttribute="trailing" secondItem="IRJ-g2-OBZ" secondAttribute="trailing" constant="20" id="dLT-sf-eWE"/>
                                     <constraint firstItem="oPH-31-5dR" firstAttribute="top" secondItem="Sq4-js-0cx" secondAttribute="bottom" id="edb-ur-Apu"/>
-                                    <constraint firstItem="IRJ-g2-OBZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oPH-31-5dR" secondAttribute="trailing" constant="8" symbolic="YES" id="iXt-N4-x36"/>
                                     <constraint firstItem="oPH-31-5dR" firstAttribute="leading" secondItem="vxV-Cr-h0W" secondAttribute="leading" constant="20" id="s1P-K9-gcs"/>
                                     <constraint firstItem="VhI-U9-Bkp" firstAttribute="leading" secondItem="eeq-FP-2BD" secondAttribute="trailing" constant="8" symbolic="YES" id="u7C-CX-MtS"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oPH-31-5dR" secondAttribute="trailing" constant="20" symbolic="YES" id="vXs-3R-YRU"/>
                                     <constraint firstItem="srC-vS-PRh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VhI-U9-Bkp" secondAttribute="trailing" constant="8" symbolic="YES" id="xiy-Wx-BeW"/>
+                                    <constraint firstAttribute="trailing" secondItem="srC-vS-PRh" secondAttribute="trailing" constant="20" id="ydG-Ub-Wwz"/>
                                     <constraint firstItem="srC-vS-PRh" firstAttribute="baseline" secondItem="Sq4-js-0cx" secondAttribute="baseline" id="zHt-jh-Muf"/>
                                 </constraints>
                             </view>
@@ -123,7 +109,6 @@
                         <outlet property="nameLabel" destination="srC-vS-PRh" id="djf-Ex-6cj"/>
                         <outlet property="scanButton" destination="oPH-31-5dR" id="8AJ-ZO-aEd"/>
                         <outlet property="stateLabel" destination="eeq-FP-2BD" id="aLw-Ez-UgL"/>
-                        <outlet property="stopButton" destination="IRJ-g2-OBZ" id="nf2-aj-l1f"/>
                         <outletCollection property="actionButtons" destination="eyd-HX-wXP" collectionClass="NSMutableArray" id="94o-wY-LUM"/>
                         <outletCollection property="actionButtons" destination="oi1-aW-v8U" collectionClass="NSMutableArray" id="9HF-aB-tSy"/>
                     </connections>

@@ -12,7 +12,6 @@ import os.log
 class ViewController: UIViewController {
 	@IBOutlet fileprivate weak var loadingIndicator: UIActivityIndicatorView!
 	@IBOutlet fileprivate weak var scanButton: UIButton!
-	@IBOutlet fileprivate weak var stopButton: UIButton!
 	@IBOutlet fileprivate weak var stateLabel: UILabel!
 	@IBOutlet fileprivate weak var nameLabel: UILabel!
 	@IBOutlet var actionButtons: [UIButton]!
@@ -31,10 +30,6 @@ class ViewController: UIViewController {
 
 	@IBAction func scanForDevice() {
 		bluetoothManager.scanForDevice()
-	}
-
-	@IBAction func stopSession() {
-		bluetoothManager.stopSession()
 	}
 
 	@IBAction func sendRegister() {
@@ -111,6 +106,9 @@ class ViewController: UIViewController {
 			appendLogMessage("Failed to parse APDU response of kind \(type(of: currentAPDU as APDUType?))")
 		}
 		currentAPDU = nil
+		if bluetoothManager.state == .Connecting || bluetoothManager.state == .Connected || bluetoothManager.state == .Scanning {
+			bluetoothManager.stopSession()
+		}
 	}
 
 	// MARK: APDU
@@ -129,7 +127,6 @@ class ViewController: UIViewController {
 		bluetoothManager.state == .Scanning ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
 		stateLabel.text = bluetoothManager.state.rawValue
 		scanButton.isEnabled = bluetoothManager.state == .Disconnected
-		stopButton.isEnabled = bluetoothManager.state == .Connecting || bluetoothManager.state == .Connected || bluetoothManager.state == .Scanning
 		nameLabel.isHidden = bluetoothManager.state != .Connected
 		nameLabel.text = bluetoothManager.deviceName
 		actionButtons.forEach() { $0.isEnabled = bluetoothManager.state == .Connected }
