@@ -21,7 +21,6 @@
 		1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3621AF3FA1003ED163 /* APDUType.swift */; };
 		1AF65D4121B0B42C003ED163 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D3F21B0B42B003ED163 /* BluetoothManager.swift */; };
 		1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D4021B0B42C003ED163 /* DeviceManager.swift */; };
-		8B3A6E32CF69179A8453BA31 /* Pods_u2f_ble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF719148899860381C2045B /* Pods_u2f_ble.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,9 +40,6 @@
 		1AF65D3621AF3FA1003ED163 /* APDUType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APDUType.swift; sourceTree = "<group>"; };
 		1AF65D3F21B0B42B003ED163 /* BluetoothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		1AF65D4021B0B42C003ED163 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
-		7EF719148899860381C2045B /* Pods_u2f_ble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_u2f_ble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F347DBE22A58EF60EF16C7CC /* Pods-u2f-ble.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-u2f-ble.debug.xcconfig"; path = "Target Support Files/Pods-u2f-ble/Pods-u2f-ble.debug.xcconfig"; sourceTree = "<group>"; };
-		FDCB5836940A671657876AE7 /* Pods-u2f-ble.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-u2f-ble.release.xcconfig"; path = "Target Support Files/Pods-u2f-ble/Pods-u2f-ble.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B3A6E32CF69179A8453BA31 /* Pods_u2f_ble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,8 +58,6 @@
 			children = (
 				1AF65D0B21AF3A0C003ED163 /* u2f-ble */,
 				1AF65D0A21AF3A0C003ED163 /* Products */,
-				2498BA5258BECCE1D3B1D4C3 /* Pods */,
-				C9E7F4D94DEA28DDF0797DFB /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -141,23 +134,6 @@
 			path = managers;
 			sourceTree = "<group>";
 		};
-		2498BA5258BECCE1D3B1D4C3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F347DBE22A58EF60EF16C7CC /* Pods-u2f-ble.debug.xcconfig */,
-				FDCB5836940A671657876AE7 /* Pods-u2f-ble.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		C9E7F4D94DEA28DDF0797DFB /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7EF719148899860381C2045B /* Pods_u2f_ble.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -165,11 +141,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AF65D1B21AF3A0D003ED163 /* Build configuration list for PBXNativeTarget "u2f-ble" */;
 			buildPhases = (
-				A742E7AA92A1EEBDB49B47BC /* [CP] Check Pods Manifest.lock */,
 				1AF65D0521AF3A0C003ED163 /* Sources */,
 				1AF65D0621AF3A0C003ED163 /* Frameworks */,
 				1AF65D0721AF3A0C003ED163 /* Resources */,
-				CED7ACB6B5B8CE08E843E415 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -226,53 +200,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A742E7AA92A1EEBDB49B47BC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-u2f-ble-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CED7ACB6B5B8CE08E843E415 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-u2f-ble/Pods-u2f-ble-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GMEllipticCurveCrypto/GMEllipticCurveCrypto.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GMEllipticCurveCrypto.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-u2f-ble/Pods-u2f-ble-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1AF65D0521AF3A0C003ED163 /* Sources */ = {
@@ -433,7 +360,6 @@
 		};
 		1AF65D1C21AF3A0D003ED163 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F347DBE22A58EF60EF16C7CC /* Pods-u2f-ble.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -454,7 +380,6 @@
 		};
 		1AF65D1D21AF3A0D003ED163 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDCB5836940A671657876AE7 /* Pods-u2f-ble.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
