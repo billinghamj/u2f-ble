@@ -4,6 +4,7 @@
 //
 //  Created by Nicolas Bigot on 11/02/2016.
 //  Copyright © 2016 Ledger. All rights reserved.
+//  Copyright © 2018 James Billingham. All rights reserved.
 //
 
 import Foundation
