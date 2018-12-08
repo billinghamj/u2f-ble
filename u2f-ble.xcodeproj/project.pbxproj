@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AF2BD3721BC05520047B742 /* U2FRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3621BC05520047B742 /* U2FRequest.swift */; };
+		1AF2BD3921BC055B0047B742 /* U2FResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3821BC055B0047B742 /* U2FResponse.swift */; };
+		1AF2BD3B21BC05AC0047B742 /* Base64URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3A21BC05AC0047B742 /* Base64URL.swift */; };
 		1AF65D0D21AF3A0C003ED163 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D0C21AF3A0C003ED163 /* AppDelegate.swift */; };
 		1AF65D0F21AF3A0C003ED163 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF65D0E21AF3A0C003ED163 /* ViewController.swift */; };
 		1AF65D1221AF3A0C003ED163 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF65D1021AF3A0C003ED163 /* Main.storyboard */; };
@@ -23,6 +26,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1AF2BD3621BC05520047B742 /* U2FRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FRequest.swift; sourceTree = "<group>"; };
+		1AF2BD3821BC055B0047B742 /* U2FResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FResponse.swift; sourceTree = "<group>"; };
+		1AF2BD3A21BC05AC0047B742 /* Base64URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64URL.swift; sourceTree = "<group>"; };
 		1AF65D0921AF3A0C003ED163 /* u2f-ble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "u2f-ble.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF65D0C21AF3A0C003ED163 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AF65D0E21AF3A0C003ED163 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +57,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1AF2BD3521BC05280047B742 /* messageport-types */ = {
+			isa = PBXGroup;
+			children = (
+				1AF2BD3A21BC05AC0047B742 /* Base64URL.swift */,
+				1AF2BD3621BC05520047B742 /* U2FRequest.swift */,
+				1AF2BD3821BC055B0047B742 /* U2FResponse.swift */,
+			);
+			path = "messageport-types";
+			sourceTree = "<group>";
+		};
 		1AF65D0021AF3A0C003ED163 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +100,7 @@
 			children = (
 				1AF65D2021AF3E3B003ED163 /* apdu */,
 				1AF65D3E21B0B419003ED163 /* managers */,
+				1AF2BD3521BC05280047B742 /* messageport-types */,
 				1AF65D2721AF3EF2003ED163 /* utils */,
 			);
 			path = lib;
@@ -203,10 +220,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AF2BD3B21BC05AC0047B742 /* Base64URL.swift in Sources */,
+				1AF2BD3921BC055B0047B742 /* U2FResponse.swift in Sources */,
 				1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */,
 				1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */,
 				1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */,
 				1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */,
+				1AF2BD3721BC05520047B742 /* U2FRequest.swift in Sources */,
 				1AF65D0F21AF3A0C003ED163 /* ViewController.swift in Sources */,
 				1AF65D2E21AF3F25003ED163 /* DataWriter.swift in Sources */,
 				1AF65D0D21AF3A0C003ED163 /* AppDelegate.swift in Sources */,
