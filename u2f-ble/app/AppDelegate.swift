@@ -25,27 +25,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let (data, returnURL) = parseParams(url)
 			else { return false }
 
-		print(data.challenge.data.base64EncodedString())
 		print(returnURL)
 
-		return false
+		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
+		let origin = "" // TODO: parse origin
+
+		switch req.type {
+		case .register:
+			// TODO: support?
+			return false
+		case .sign:
+			let req = try! JSONDecoder().decode(U2FSignRequest.self, from: data)
+
+			let key = req.registeredKeys![0]
+			let appID = key.appID ?? req.appID ?? origin
+
+			// TODO: verify appID against origin
+
+			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, origin: origin))
+			let keyHandle = key.keyHandle.data
+
+			(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature: Data) in
+				let data = U2FSignResponseData(keyHandle: key.keyHandle, signatureData: Base64URLData(signature), clientData: Base64URLData(clientData))
+				let response = U2FResponse(type: .sign, responseData: .sign(data), requestID: req.requestID)
+				let json = try! String(data: JSONEncoder().encode(response), encoding: .utf8)
+
+				var comps = URLComponents(url: returnURL, resolvingAgainstBaseURL: false)!
+				comps.percentEncodedFragment = "chaldt=\(json!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)"
+
+				UIApplication.shared.open(comps.url!)
+			})
+
+			return true
+		}
 	}
 }
 
-func parseParams(_ url: URL) -> (data: U2FRequest, returnURL: URL)? {
+func parseParams(_ url: URL) -> (data: Data, returnURL: URL)? {
 	guard
 		let params = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
 		else { return nil }
 
-	var data: U2FRequest?
+	var data: Data?
 	var returnURL: URL?
 
 	for item in params {
 		switch item.name {
 		case "data":
-			data = try! JSONDecoder().decode(U2FRequest.self, from: item.value!.data(using: .utf8)!)
+			data = item.value!.data(using: .utf8)
 		case "returnUrl":
-			returnURL = URL(string: item.value!)!
+			returnURL = URL(string: item.value!)
 		default:
 			return nil
 		}
@@ -59,42 +88,18 @@ func parseParams(_ url: URL) -> (data: U2FRequest, returnURL: URL)? {
 	return (data2, returnURL2)
 }
 
-struct U2FRequest: Decodable {
-	let type: RequestType
-	let appId: URL
-	let challenge: Base64URLData
-	let registeredKeys: [RegisteredKeys]?
-	let timeoutSeconds: Int64?
-	let requestId: Int64?
+struct ClientData: Codable {
+	let type: AssertionType
+	let challenge: String
+	let cidPubkey: String = "unused"
+	let origin: String
 
-	enum RequestType: String, Codable {
-		case register = "u2f_register_request"
-		case sign = "u2f_sign_request"
+	private enum CodingKeys: String, CodingKey {
+		case type = "typ", challenge, cidPubkey = "cid_pubkey", origin
 	}
 
-	struct RegisteredKeys: Decodable {
-		let keyHandle: Base64URLData
+	enum AssertionType: String, Codable {
+		case register = "navigator.id.finishEnrollment"
+		case sign = "navigator.id.getAssertion"
 	}
-}
-
-struct Base64URLData: Decodable {
-	let data: Data
-
-	init(from decoder: Decoder) throws {
-		let b64URL = try String.init(from: decoder)
-
-		data = Data(base64Encoded: b64URLToB64(b64URL))!
-	}
-}
-
-func b64URLToB64(_ b64URL: String) -> String {
-	var b64 = b64URL
-		.replacingOccurrences(of: "-", with: "+")
-		.replacingOccurrences(of: "_", with: "/")
-
-	if b64.count % 4 != 0 {
-		b64.append(String(repeating: "=", count: 4 - b64.count % 4))
-	}
-
-	return b64
 }

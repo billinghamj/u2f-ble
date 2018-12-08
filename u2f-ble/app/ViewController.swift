@@ -7,13 +7,21 @@
 //  Copyright © 2018 James Billingham. All rights reserved.
 //
 
+import CommonCrypto
 import UIKit
 import os.log
+
+func sha256(_ data: Data) -> Data {
+	var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+	data.withUnsafeBytes({
+		_ = CC_SHA256($0, CC_LONG(data.count), &hash)
+	})
+	return Data(bytes: hash)
+}
 
 class ViewController: UIViewController {
 	@IBOutlet fileprivate weak var stateLabel: UILabel!
 	@IBOutlet fileprivate weak var nameLabel: UILabel!
-	@IBOutlet var actionButtons: [UIButton]!
 
 	fileprivate lazy var bluetoothManager: BluetoothManager = {
 		let manager = BluetoothManager()
@@ -22,58 +30,16 @@ class ViewController: UIViewController {
 		manager.onReceivedAPDU = self.handleReceivedAPDU
 		return manager
 	}()
-	fileprivate var currentAPDU: APDUType? = nil
-	fileprivate var keyHandle: Data? = nil
+	fileprivate var currentAPDU: AuthenticateAPDU? = nil
+	fileprivate var callback: ((_ signature: Data) -> Void)? = nil
 
-	// MARK: Actions
+	func handleAuthenticate(appID: String, clientData: Data, keyHandle: Data, callback: @escaping (_ signature: Data) -> Void) {
+		self.callback = callback
 
-	@IBAction func sendRegister() {
-		guard
-			bluetoothManager.state == .Disconnected
-			else { return }
+		let chal = sha256(clientData)
+		let appParam = sha256(appID.data(using: .utf8)!)
 
-		var challenge: [UInt8] = []
-		var applicationParameter: [UInt8] = []
-
-		for i in 0..<32 {
-			challenge.append(UInt8(i))
-			applicationParameter.append(UInt8(i) | 0x80)
-		}
-		let challengeData = Data(bytes: challenge)
-		let applicationParameterData = Data(bytes: applicationParameter)
-
-		if let apdu = RegisterAPDU(challenge: challengeData, applicationParameter: applicationParameterData) {
-			apdu.onDebugMessage = self.handleAPDUMessage
-			currentAPDU = apdu
-			bluetoothManager.scanForDevice()
-		} else {
-			appendLogMessage("Unable to build REGISTER APDU")
-		}
-	}
-
-	@IBAction func sendAuthenticate() {
-		guard
-			bluetoothManager.state == .Disconnected
-			else { return }
-
-		guard
-			let keyHandle = keyHandle
-			else {
-				appendLogMessage("Unable to build AUTHENTICATE APDU, not yet REGISTERED")
-				return
-		}
-
-		var challenge: [UInt8] = []
-		var applicationParameter: [UInt8] = []
-
-		for i in 0..<32 {
-			challenge.append(UInt8(i) | 0x10)
-			applicationParameter.append(UInt8(i) | 0x80)
-		}
-		let challengeData = Data(bytes: challenge)
-		let applicationParameterData = Data(bytes: applicationParameter)
-
-		if let apdu = AuthenticateAPDU(challenge: challengeData, applicationParameter: applicationParameterData, keyHandle: keyHandle) {
+		if let apdu = AuthenticateAPDU(challenge: chal, applicationParameter: appParam, keyHandle: keyHandle) {
 			apdu.onDebugMessage = self.handleAPDUMessage
 			currentAPDU = apdu
 			bluetoothManager.scanForDevice()
@@ -105,11 +71,15 @@ class ViewController: UIViewController {
 	}
 
 	fileprivate func handleReceivedAPDU(_ manager: BluetoothManager, data: Data) {
-		if let success = currentAPDU?.parseResponse(data), success {
-			appendLogMessage("Successfully parsed APDU response of kind \(currentAPDU as APDUType?)")
-			if let currentAPDU = currentAPDU as? RegisterAPDU {
-				keyHandle = currentAPDU.keyHandle
-			}
+		if let currentAPDU = currentAPDU, currentAPDU.parseResponse(data) {
+			appendLogMessage("Successfully parsed APDU response of kind \(currentAPDU)")
+
+			let dw = DataWriter()
+			dw.writeNextUInt8(currentAPDU.userPresenceFlag!)
+			dw.writeNextBigEndianUInt32(currentAPDU.counter!)
+			dw.writeNextData(currentAPDU.signature!)
+
+			self.callback?(dw.data)
 		} else {
 			appendLogMessage("Failed to parse APDU response of kind \(type(of: currentAPDU as APDUType?))")
 		}
@@ -134,7 +104,6 @@ class ViewController: UIViewController {
 		stateLabel.text = bluetoothManager.state.rawValue
 		nameLabel.isHidden = bluetoothManager.state != .Connected
 		nameLabel.text = bluetoothManager.deviceName
-		actionButtons.forEach() { $0.isEnabled = bluetoothManager.state == .Disconnected }
 	}
 
 	override func viewDidLoad() {
