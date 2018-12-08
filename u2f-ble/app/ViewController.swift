@@ -30,11 +30,11 @@ class ViewController: UIViewController {
 		manager.onReceivedAPDU = self.handleReceivedAPDU
 		return manager
 	}()
-	fileprivate var currentAPDU: AuthenticateAPDU? = nil
-	fileprivate var callback: ((_ signature: Data) -> Void)? = nil
+	fileprivate var currentAPDU: APDUType? = nil
+	fileprivate var authenticateCallback: ((_ signature: Data) -> Void)? = nil
 
 	func handleAuthenticate(appID: String, clientData: Data, keyHandle: Data, callback: @escaping (_ signature: Data) -> Void) {
-		self.callback = callback
+		self.authenticateCallback = callback
 
 		let chal = sha256(clientData)
 		let appParam = sha256(appID.data(using: .utf8)!)
@@ -71,15 +71,19 @@ class ViewController: UIViewController {
 	}
 
 	fileprivate func handleReceivedAPDU(_ manager: BluetoothManager, data: Data) {
-		if let currentAPDU = currentAPDU, currentAPDU.parseResponse(data) {
-			appendLogMessage("Successfully parsed APDU response of kind \(currentAPDU)")
+		if let apdu = currentAPDU, apdu.parseResponse(data) {
+			appendLogMessage("Successfully parsed APDU response of kind \(apdu)")
 
-			let dw = DataWriter()
-			dw.writeNextUInt8(currentAPDU.userPresenceFlag!)
-			dw.writeNextBigEndianUInt32(currentAPDU.counter!)
-			dw.writeNextData(currentAPDU.signature!)
-
-			self.callback?(dw.data)
+			switch apdu {
+			case let apdu as AuthenticateAPDU:
+				let dw = DataWriter()
+				dw.writeNextUInt8(apdu.userPresenceFlag!)
+				dw.writeNextBigEndianUInt32(apdu.counter!)
+				dw.writeNextData(apdu.signature!)
+				self.authenticateCallback?(dw.data)
+			default:
+				return
+			}
 		} else {
 			appendLogMessage("Failed to parse APDU response of kind \(type(of: currentAPDU as APDUType?))")
 		}
