@@ -20,6 +20,10 @@ struct Base64URLData: Codable {
 
 		data = Data(base64Encoded: b64URLToB64(b64URL))!
 	}
+
+	func encode(to encoder: Encoder) throws {
+		try b64ToB64URL(data.base64EncodedString()).encode(to: encoder)
+	}
 }
 
 func b64ToB64URL(_ b64: String) -> String {

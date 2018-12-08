@@ -19,14 +19,25 @@ struct U2FResponse: Encodable {
 	let requestID: UInt64?
 
 	private enum CodingKeys: String, CodingKey {
-		case type, requestID = "requestId"
+		case type, responseData, requestID = "requestId"
 	}
 }
 
-enum U2FResponseData {
+enum U2FResponseData: Encodable {
 	case error(U2FErrorResponseData)
 	case register(U2FRegisterResponseData)
 	case sign(U2FSignResponseData)
+
+	func encode(to encoder: Encoder) throws {
+		switch self {
+		case .error(let x):
+			try x.encode(to: encoder)
+		case .register(let x):
+			try x.encode(to: encoder)
+		case .sign(let x):
+			try x.encode(to: encoder)
+		}
+	}
 }
 
 struct U2FErrorResponseData: Codable {
