@@ -28,7 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		print(returnURL)
 
 		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
-		let origin = "" // TODO: parse origin
+
+		guard
+			let facetID = getWebOrigin(returnURL)
+			else { return false }
 
 		switch req.type {
 		case .register:
@@ -38,14 +41,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let req = try! JSONDecoder().decode(U2FSignRequest.self, from: data)
 
 			let key = req.registeredKeys![0]
-			let appID = key.appID ?? req.appID ?? origin
+			let appID = key.appID ?? req.appID ?? facetID
 
-			// TODO: verify appID against origin
+			guard
+				let appIDURL = URL(string: appID),
+				let appIDOrigin = getWebOrigin(appIDURL),
+				appIDOrigin == facetID
+				else { return false }
 
-			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, origin: origin))
+			// TODO: allow for a trusted facet list
+
+			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, origin: facetID))
 			let keyHandle = key.keyHandle.data
 
-			(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature: Data) in
+			(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature) in
 				let data = U2FSignResponseData(keyHandle: key.keyHandle, signatureData: Base64URLData(signature), clientData: Base64URLData(clientData))
 				let response = U2FResponse(type: .sign, responseData: .sign(data), requestID: req.requestID)
 				let json = try! String(data: JSONEncoder().encode(response), encoding: .utf8)
@@ -86,6 +95,22 @@ func parseParams(_ url: URL) -> (data: Data, returnURL: URL)? {
 		else { return nil }
 
 	return (data2, returnURL2)
+}
+
+func getWebOrigin(_ url: URL) -> String? {
+	guard
+		url.scheme == "https", // TODO: maybe allow `ios:bundle-id:...` facet IDs?
+		let host = url.host,
+		host != ""
+		else { return nil }
+
+	var comps = URLComponents()
+
+	comps.scheme = url.scheme
+	comps.host = url.host
+	comps.port = url.port
+
+	return comps.url!.absoluteString
 }
 
 struct ClientData: Codable {
