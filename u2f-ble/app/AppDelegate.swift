@@ -48,12 +48,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				let appIDFacetID = U2FFacets.genFacetID(appIDURL)
 				else { return false }
 
-			if sourceAppFacetID.lowercased() == appID.lowercased() {
+			if sourceAppFacetID == appID {
 				doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				return true
 			}
 
-			if returnURLFacetID.lowercased() == appIDFacetID.lowercased() {
+			if returnURLFacetID == appIDFacetID {
 				doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				return true
 			}
@@ -63,13 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					let ids = ids
 					else { return } // TODO: return error somehow?
 
-				if ids.contains(where: { $0.lowercased() == sourceAppFacetID.lowercased() }) {
+				if ids.contains(where: { $0 == sourceAppFacetID }) {
 					DispatchQueue.main.async(execute: { [unowned self] in
 						self.doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 					})
 				}
 
-				if ids.contains(where: { $0.lowercased() == returnURLFacetID.lowercased() }) {
+				if ids.contains(where: { $0 == returnURLFacetID }) {
 					DispatchQueue.main.async(execute: { [unowned self] in
 						self.doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 					})
