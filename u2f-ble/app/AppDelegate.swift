@@ -64,11 +64,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					else { return } // TODO: return error somehow?
 
 				if ids.contains(where: { $0.lowercased() == sourceAppFacetID.lowercased() }) {
-					self.doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
+					DispatchQueue.main.async(execute: { [unowned self] in
+						self.doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
+					})
 				}
 
 				if ids.contains(where: { $0.lowercased() == returnURLFacetID.lowercased() }) {
-					self.doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
+					DispatchQueue.main.async(execute: { [unowned self] in
+						self.doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
+					})
 				}
 
 				// TODO: return error?
