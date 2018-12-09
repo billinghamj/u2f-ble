@@ -58,6 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				return true
 			}
 
+			guard
+				appIDURL.scheme == "https"
+				else { return false }
+
 			U2FFacets.loadTrustedFacetList(appIDURL, completionHandler: { (ids) in
 				guard
 					let ids = ids
