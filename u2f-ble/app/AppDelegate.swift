@@ -69,6 +69,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			return true
 		}
 	}
+
+	func loadTrustedFacetList(_ appID: URL, completionHandler: @escaping (U2FTrustedFacetsResponse?) -> Void) {
+		let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+
+		let task = session.dataTask(with: appID, completionHandler: { (data, response, error) in
+			guard
+				error == nil,
+				let response = response as? HTTPURLResponse,
+				response.statusCode >= 200,
+				response.statusCode < 300,
+				response.mimeType == "application/fido.trusted-apps+json",
+				let data = data,
+				let result = try? JSONDecoder().decode(U2FTrustedFacetsResponse.self, from: data)
+				else {
+					completionHandler(nil)
+					return
+			}
+
+			completionHandler(result)
+		})
+
+		task.resume()
+	}
+}
+
+extension AppDelegate: URLSessionTaskDelegate {
+	func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+		for header in response.allHeaderFields {
+			if (header.key as! String).lowercased() == "FIDO-AppID-Redirect-Authorized" && (header.value as! String) == "true" {
+				completionHandler(request)
+				return
+			}
+		}
+
+		completionHandler(nil)
+	}
 }
 
 func parseParams(_ url: URL) -> (data: Data, returnURL: URL)? {
@@ -127,5 +163,19 @@ struct ClientData: Codable {
 	enum AssertionType: String, Codable {
 		case register = "navigator.id.finishEnrollment"
 		case sign = "navigator.id.getAssertion"
+	}
+}
+
+struct U2FTrustedFacetsResponse: Codable {
+	let trustedFacets: [U2FTrustedFacets]
+}
+
+struct U2FTrustedFacets: Codable {
+	let version: Version
+	let ids: [String]
+
+	struct Version: Codable {
+		let major: UInt16
+		let minor: UInt16
 	}
 }
