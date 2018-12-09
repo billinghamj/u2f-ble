@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 		guard
-			url.scheme == "u2f",
+			url.scheme == "u2f-google",
 			url.host == "auth",
 			url.path == "",
 			let (data, returnURL) = parseParams(url),
@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let json = try! String(data: JSONEncoder().encode(response), encoding: .utf8)
 
 			var comps = URLComponents(url: returnURL, resolvingAgainstBaseURL: false)!
-			comps.percentEncodedFragment = "chaldt=\(json!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)"
+			comps.percentEncodedFragment = "chaldt=\(json!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)"
 
 			UIApplication.shared.open(comps.url!)
 		})
@@ -114,9 +114,9 @@ func parseParams(_ url: URL) -> (data: Data, returnURL: URL)? {
 	for item in params {
 		switch item.name {
 		case "data":
-			data = item.value!.data(using: .utf8)
+			data = String(data: item.value!.data(using: .utf8)!, encoding: .utf8)?.removingPercentEncoding?.data(using: .utf8)
 		case "returnUrl":
-			returnURL = URL(string: item.value!)
+			returnURL = URL(string: item.value!.removingPercentEncoding!)
 		default:
 			return nil
 		}

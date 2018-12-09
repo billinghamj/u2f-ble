@@ -23,7 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>u2f</string>
+				<string>u2f-google</string>
 			</array>
 		</dict>
 	</array>
