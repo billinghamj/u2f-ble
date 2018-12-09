@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
 
 		guard
-			let facetID = getWebOrigin(returnURL)
+			let facetID = genFacetID(returnURL)?.lowercased()
 			else { return false }
 
 		switch req.type {
@@ -44,15 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 			guard
 				let appIDURL = URL(string: appID),
-				let appIDOrigin = getWebOrigin(appIDURL),
-				appIDOrigin == facetID
+				let appIDFacetID = genFacetID(appIDURL)?.lowercased(),
+				appIDFacetID == facetID
 				else { return false }
-
-			print((try! TLDExtract()).parse(appIDURL)!.rootDomain!)
 
 			// TODO: allow for a trusted facet list
 
-			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, origin: facetID))
+			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: facetID))
 			let keyHandle = key.keyHandle.data
 
 			(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature) in
@@ -134,7 +132,7 @@ func parseParams(_ url: URL) -> (data: Data, returnURL: URL)? {
 	return (data2, returnURL2)
 }
 
-func getWebOrigin(_ url: URL) -> String? {
+func genFacetID(_ url: URL) -> String? {
 	guard
 		url.scheme == "https", // TODO: maybe allow `ios:bundle-id:...` facet IDs?
 		let host = url.host,
@@ -154,10 +152,10 @@ struct ClientData: Codable {
 	let type: AssertionType
 	let challenge: String
 	let cidPubkey: String = "unused"
-	let origin: String
+	let facetID: String
 
 	private enum CodingKeys: String, CodingKey {
-		case type = "typ", challenge, cidPubkey = "cid_pubkey", origin
+		case type = "typ", challenge, cidPubkey = "cid_pubkey", facetID = "origin"
 	}
 
 	enum AssertionType: String, Codable {
