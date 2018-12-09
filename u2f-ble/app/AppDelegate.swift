@@ -24,8 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			url.path == "",
 			let (data, returnURL) = parseParams(url),
 			let req = try? JSONDecoder().decode(U2FRequest.self, from: data),
+			let sourceAppBundleID = options[.sourceApplication] as? NSString,
 			let returnURLFacetID = U2FFacets.genFacetID(returnURL)
 			else { return false }
+
+		let sourceAppFacetID = "ios:bundle-id:\(sourceAppBundleID)"
 
 		switch req.type {
 		case .register:
@@ -43,6 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				let appIDFacetID = U2FFacets.genFacetID(appIDURL)
 				else { return false }
 
+			if sourceAppFacetID.lowercased() == appID.lowercased() {
+				let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: sourceAppFacetID))
+				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				return true
+			}
+
 			if returnURLFacetID.lowercased() == appIDFacetID.lowercased() {
 				let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))
 				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
@@ -53,6 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				guard
 					let ids = ids
 					else { return } // TODO: return error somehow?
+
+				if ids.contains(where: { $0.lowercased() == sourceAppFacetID.lowercased() }) {
+					let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: sourceAppFacetID))
+					self.doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				}
 
 				if ids.contains(where: { $0.lowercased() == returnURLFacetID.lowercased() }) {
 					let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))

@@ -86,7 +86,9 @@ struct U2FFacets {
 							let facetID = genFacetID(url)
 							else { return nil }
 						return facetID
-					default: // TODO: maybe allow `ios:bundle-id:...` facet IDs?
+					case "ios":
+						return id
+					default:
 						return nil
 					}
 				})
