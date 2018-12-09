@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			url.path == "",
 			let (data, returnURL) = parseParams(url),
 			let req = try? JSONDecoder().decode(U2FRequest.self, from: data),
-			let facetID = U2FFacets.genFacetID(returnURL)
+			let returnURLFacetID = U2FFacets.genFacetID(returnURL)
 			else { return false }
 
 		switch req.type {
@@ -36,22 +36,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 			// TODO: evaluate all keys in order (though load trusted facet lists in parallel!)
 			let key = req.registeredKeys![0]
-			let appID = key.appID ?? req.appID ?? facetID
 
 			guard
+				let appID = key.appID ?? req.appID,
 				let appIDURL = URL(string: appID),
 				let appIDFacetID = U2FFacets.genFacetID(appIDURL)
 				else { return false }
 
-			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: facetID))
-
-			if appIDFacetID.lowercased() == facetID.lowercased() {
+			if returnURLFacetID.lowercased() == appIDFacetID.lowercased() {
+				let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))
 				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
 				return true
 			}
 
 			U2FFacets.loadTrustedFacetList(appIDURL, completionHandler: { (ids) in
-				if ids?.contains(where: { $0.lowercased() == facetID.lowercased() }) ?? false {
+				guard
+					let ids = ids
+					else { return } // TODO: return error somehow?
+
+				if ids.contains(where: { $0.lowercased() == returnURLFacetID.lowercased() }) {
+					let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))
 					self.doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
 				}
 			})
