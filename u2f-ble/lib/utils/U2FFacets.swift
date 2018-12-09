@@ -26,7 +26,7 @@ private struct U2FTrustedFacetList: Codable {
 struct U2FFacets {
 	static func genFacetID(_ url: URL) -> String? {
 		guard
-			url.scheme == "https", // TODO: maybe allow `ios:bundle-id:...` facet IDs?
+			url.scheme == "https",
 			let host = url.host,
 			host != ""
 			else { return nil }
@@ -69,19 +69,26 @@ struct U2FFacets {
 			let ids = list.ids
 				.map({ (id) -> String? in
 					guard
-						let url = URL(string: id),
-						let facetIDDomain = tldExtractor.parse(url)?.rootDomain,
-						facetIDDomain.lowercased() == appIDDomain.lowercased() || (
-							// https://padlock.argh.in/2018/08/25/u2f-firefox-google.html
-							facetIDDomain == "google.com" && (
-								appID.absoluteString == "https://www.gstatic.com/securitykey/origins.json" ||
-								appID.absoluteString == "https://www.gstatic.com/securitykey/a/google.com/origins.json"
-							)
-						),
-						let facetID = genFacetID(url)
+						let url = URL(string: id)
 						else { return nil }
 
-					return facetID
+					switch url.scheme {
+					case "https":
+						guard
+							let facetIDDomain = tldExtractor.parse(url)?.rootDomain,
+							facetIDDomain.lowercased() == appIDDomain.lowercased() || (
+								// https://padlock.argh.in/2018/08/25/u2f-firefox-google.html
+								facetIDDomain == "google.com" && (
+									appID.absoluteString == "https://www.gstatic.com/securitykey/origins.json" ||
+									appID.absoluteString == "https://www.gstatic.com/securitykey/a/google.com/origins.json"
+								)
+							),
+							let facetID = genFacetID(url)
+							else { return nil }
+						return facetID
+					default: // TODO: maybe allow `ios:bundle-id:...` facet IDs?
+						return nil
+					}
 				})
 				.filter({ $0 != nil })
 				.map({ $0! })
