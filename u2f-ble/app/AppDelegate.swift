@@ -95,10 +95,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: URLSessionTaskDelegate {
 	func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
 		for header in response.allHeaderFields {
-			if (header.key as! String).lowercased() == "FIDO-AppID-Redirect-Authorized" && (header.value as! String) == "true" {
-				completionHandler(request)
-				return
-			}
+			guard
+				let key = (header.key as? String)?.lowercased(),
+				let val = (header.value as? String),
+				key == "FIDO-AppID-Redirect-Authorized".lowercased(),
+				val == "true"
+				else { continue }
+
+			completionHandler(request)
+			return
 		}
 
 		completionHandler(nil)
