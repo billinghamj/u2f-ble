@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
 
 		guard
-			let facetID = U2FFacets.genFacetID(returnURL)?.lowercased()
+			let facetID = U2FFacets.genFacetID(returnURL)
 			else { return false }
 
 		switch req.type {
@@ -38,33 +38,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		case .sign:
 			let req = try! JSONDecoder().decode(U2FSignRequest.self, from: data)
 
+			// TODO: evaluate all keys in order (though load trusted facet lists in parallel!)
 			let key = req.registeredKeys![0]
 			let appID = key.appID ?? req.appID ?? facetID
 
 			guard
 				let appIDURL = URL(string: appID),
-				let appIDFacetID = U2FFacets.genFacetID(appIDURL)?.lowercased(),
-				appIDFacetID == facetID
+				let appIDFacetID = U2FFacets.genFacetID(appIDURL)
 				else { return false }
+
+			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: facetID))
+
+			if appIDFacetID.lowercased() == facetID.lowercased() {
+				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				return true
+			}
 
 			// TODO: allow for a trusted facet list
 
-			let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: facetID))
-			let keyHandle = key.keyHandle.data
-
-			(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature) in
-				let data = U2FSignResponseData(keyHandle: key.keyHandle, signatureData: Base64URLData(signature), clientData: Base64URLData(clientData))
-				let response = U2FResponse(type: .sign, responseData: .sign(data), requestID: req.requestID)
-				let json = try! String(data: JSONEncoder().encode(response), encoding: .utf8)
-
-				var comps = URLComponents(url: returnURL, resolvingAgainstBaseURL: false)!
-				comps.percentEncodedFragment = "chaldt=\(json!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)"
-
-				UIApplication.shared.open(comps.url!)
-			})
-
-			return true
+			return false
 		}
+	}
+
+	private func doSign(appID: String, clientData: Data, key: U2FRegisteredKey, requestID: UInt64?, returnURL: URL) {
+		let keyHandle = key.keyHandle.data
+
+		(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature) in
+			let data = U2FSignResponseData(keyHandle: key.keyHandle, signatureData: Base64URLData(signature), clientData: Base64URLData(clientData))
+			let response = U2FResponse(type: .sign, responseData: .sign(data), requestID: requestID)
+			let json = try! String(data: JSONEncoder().encode(response), encoding: .utf8)
+
+			var comps = URLComponents(url: returnURL, resolvingAgainstBaseURL: false)!
+			comps.percentEncodedFragment = "chaldt=\(json!.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)"
+
+			UIApplication.shared.open(comps.url!)
+		})
 	}
 }
 

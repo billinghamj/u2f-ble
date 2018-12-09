@@ -45,7 +45,7 @@ struct U2FFacets {
 
 		guard
 			let tldExtractor = try? TLDExtract(),
-			let appIDDomain = tldExtractor.parse(appID)?.rootDomain?.lowercased()
+			let appIDDomain = tldExtractor.parse(appID)?.rootDomain
 			else {
 				completionHandler(nil)
 				return
@@ -70,8 +70,8 @@ struct U2FFacets {
 				.map({ (id) -> String? in
 					guard
 						let url = URL(string: id),
-						let facetIDDomain = tldExtractor.parse(url)?.rootDomain?.lowercased(),
-						facetIDDomain == appIDDomain,
+						let facetIDDomain = tldExtractor.parse(url)?.rootDomain,
+						facetIDDomain.lowercased() == appIDDomain.lowercased(),
 						let facetID = genFacetID(url)
 						else { return nil }
 
@@ -93,9 +93,9 @@ private class U2FTrustedFacetURLSessionDelegate: NSObject, URLSessionTaskDelegat
 	func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
 		for header in response.allHeaderFields {
 			guard
-				let key = (header.key as? String)?.lowercased(),
+				let key = (header.key as? String),
 				let val = (header.value as? String),
-				key == "FIDO-AppID-Redirect-Authorized".lowercased(),
+				key.lowercased() == "FIDO-AppID-Redirect-Authorized".lowercased(),
 				val == "true"
 				else { continue }
 
