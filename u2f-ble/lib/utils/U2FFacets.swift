@@ -60,7 +60,7 @@ struct U2FFacets {
 				response.mimeType == "application/fido.trusted-apps+json",
 				let data = data,
 				let result = try? JSONDecoder().decode(U2FTrustedFacetsResponse.self, from: data),
-				let list = result.trustedFacets.first(where: { $0.version.major == 0 && $0.version.minor == 0 })
+				let list = result.trustedFacets.first(where: { $0.version.major == 1 && $0.version.minor == 0 })
 				else {
 					completionHandler(nil)
 					return
