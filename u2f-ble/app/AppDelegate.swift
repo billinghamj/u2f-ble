@@ -68,8 +68,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 	}
 
-	func loadTrustedFacetList(_ appID: URL, completionHandler: @escaping (U2FTrustedFacetsResponse?) -> Void) {
+	func loadTrustedFacetList(_ appID: URL, completionHandler: @escaping ([String]?) -> Void) {
 		let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+
+		guard
+			let tldExtractor = try? TLDExtract(),
+			let appIDDomain = tldExtractor.parse(appID)?.rootDomain?.lowercased()
+			else {
+				completionHandler(nil)
+				return
+		}
 
 		let task = session.dataTask(with: appID, completionHandler: { (data, response, error) in
 			guard
@@ -79,13 +87,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				response.statusCode < 300,
 				response.mimeType == "application/fido.trusted-apps+json",
 				let data = data,
-				let result = try? JSONDecoder().decode(U2FTrustedFacetsResponse.self, from: data)
+				let result = try? JSONDecoder().decode(U2FTrustedFacetsResponse.self, from: data),
+				let list = result.trustedFacets.first(where: { $0.version.major == 0 && $0.version.minor == 0 })
 				else {
 					completionHandler(nil)
 					return
 			}
 
-			completionHandler(result)
+			let ids = list.ids
+				.map({ (id) -> String? in
+					guard
+						let url = URL(string: id),
+						let facetIDDomain = tldExtractor.parse(url)?.rootDomain?.lowercased(),
+						facetIDDomain == appIDDomain,
+						let facetID = genFacetID(url)
+						else { return nil }
+
+					return facetID
+				})
+				.filter({ $0 != nil })
+				.map({ $0! })
+
+			completionHandler(ids.count > 0 ? ids : nil)
 		})
 
 		task.resume()
