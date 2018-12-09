@@ -3,7 +3,7 @@
 //  u2f-ble
 //
 //  Created by James Billingham on 09/12/2018.
-//  Copyright © 2018 Cuvva. All rights reserved.
+//  Copyright © 2018 James Billingham. All rights reserved.
 //
 
 import Foundation

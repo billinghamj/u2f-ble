@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 		guard
-			url.scheme == "cuvva-u2f",
+			url.scheme == "u2f",
 			url.host == "auth",
 			url.path == "",
 			let (data, returnURL) = parseParams(url),

@@ -23,7 +23,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>cuvva-u2f</string>
+				<string>u2f</string>
 			</array>
 		</dict>
 	</array>
