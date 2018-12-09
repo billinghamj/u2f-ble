@@ -22,12 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			url.scheme == "cuvva-u2f",
 			url.host == "auth",
 			url.path == "",
-			let (data, returnURL) = parseParams(url)
-			else { return false }
-
-		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
-
-		guard
+			let (data, returnURL) = parseParams(url),
+			let req = try? JSONDecoder().decode(U2FRequest.self, from: data),
 			let facetID = U2FFacets.genFacetID(returnURL)
 			else { return false }
 
