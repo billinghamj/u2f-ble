@@ -1,3 +1,20 @@
-PODFILE CHECKSUM: e25a6219e108b713dcd75e6f2c5caee323dbbbd2
+PODS:
+  - Punycode (1.0.1)
+  - TLDExtract (1.0.1):
+    - Punycode (~> 1.0)
+
+DEPENDENCIES:
+  - TLDExtract
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Punycode
+    - TLDExtract
+
+SPEC CHECKSUMS:
+  Punycode: ddbef4a269780c8f19a7e8deb01d9f101cb2ef86
+  TLDExtract: 63aa739e9b50052ef04e792927c43db62b2bb6b5
+
+PODFILE CHECKSUM: 3b7f36c5cd84749a807c4b6abfdec7dc357656ce
 
 COCOAPODS: 1.5.3
