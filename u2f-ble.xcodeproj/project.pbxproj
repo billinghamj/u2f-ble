@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A25736A21BD47D0001FFDFE /* U2FFacets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A25736921BD47D0001FFDFE /* U2FFacets.swift */; };
 		1AF2BD3721BC05520047B742 /* U2FRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3621BC05520047B742 /* U2FRequest.swift */; };
 		1AF2BD3921BC055B0047B742 /* U2FResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3821BC055B0047B742 /* U2FResponse.swift */; };
 		1AF2BD3B21BC05AC0047B742 /* Base64URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF2BD3A21BC05AC0047B742 /* Base64URL.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A25736921BD47D0001FFDFE /* U2FFacets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FFacets.swift; sourceTree = "<group>"; };
 		1AF2BD3621BC05520047B742 /* U2FRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FRequest.swift; sourceTree = "<group>"; };
 		1AF2BD3821BC055B0047B742 /* U2FResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FResponse.swift; sourceTree = "<group>"; };
 		1AF2BD3A21BC05AC0047B742 /* Base64URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64URL.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				1AF65D2D21AF3F25003ED163 /* DataReader.swift */,
 				1AF65D2821AF3F25003ED163 /* DataWriter.swift */,
 				1AF65D2B21AF3F25003ED163 /* TransportHelper.swift */,
+				1A25736921BD47D0001FFDFE /* U2FFacets.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				1AF2BD3B21BC05AC0047B742 /* Base64URL.swift in Sources */,
 				1AF2BD3921BC055B0047B742 /* U2FResponse.swift in Sources */,
 				1AF65D3321AF3F25003ED163 /* DataReader.swift in Sources */,
+				1A25736A21BD47D0001FFDFE /* U2FFacets.swift in Sources */,
 				1AF65D3921AF3FA1003ED163 /* APDUType.swift in Sources */,
 				1AF65D4221B0B42C003ED163 /* DeviceManager.swift in Sources */,
 				1AF65D3721AF3FA1003ED163 /* AuthenticateAPDU.swift in Sources */,
