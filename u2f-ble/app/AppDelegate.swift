@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TLDExtract
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,8 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			url.path == "",
 			let (data, returnURL) = parseParams(url)
 			else { return false }
-
-		print(returnURL)
 
 		let req = try! JSONDecoder().decode(U2FRequest.self, from: data)
 
@@ -48,6 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				let appIDOrigin = getWebOrigin(appIDURL),
 				appIDOrigin == facetID
 				else { return false }
+
+			print((try! TLDExtract()).parse(appIDURL)!.rootDomain!)
 
 			// TODO: allow for a trusted facet list
 
