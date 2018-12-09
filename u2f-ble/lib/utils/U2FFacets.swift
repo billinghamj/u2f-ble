@@ -71,7 +71,13 @@ struct U2FFacets {
 					guard
 						let url = URL(string: id),
 						let facetIDDomain = tldExtractor.parse(url)?.rootDomain,
-						facetIDDomain.lowercased() == appIDDomain.lowercased(),
+						facetIDDomain.lowercased() == appIDDomain.lowercased() || (
+							// https://padlock.argh.in/2018/08/25/u2f-firefox-google.html
+							facetIDDomain == "google.com" && (
+								appID.absoluteString == "https://www.gstatic.com/securitykey/origins.json" ||
+								appID.absoluteString == "https://www.gstatic.com/securitykey/a/google.com/origins.json"
+							)
+						),
 						let facetID = genFacetID(url)
 						else { return nil }
 
