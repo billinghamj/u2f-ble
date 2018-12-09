@@ -54,9 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				return true
 			}
 
-			// TODO: allow for a trusted facet list
+			U2FFacets.loadTrustedFacetList(appIDURL, completionHandler: { (ids) in
+				if ids?.contains(where: { $0.lowercased() == facetID.lowercased() }) ?? false {
+					self.doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				}
+			})
 
-			return false
+			return true
 		}
 	}
 
