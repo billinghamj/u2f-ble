@@ -36,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			return false
 		case .sign:
 			let req = try! JSONDecoder().decode(U2FSignRequest.self, from: data)
+			let challenge = req.challenge
+			let requestID = req.requestID
 
 			// TODO: evaluate all keys in order (though load trusted facet lists in parallel!)
 			let key = req.registeredKeys![0]
@@ -47,14 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				else { return false }
 
 			if sourceAppFacetID.lowercased() == appID.lowercased() {
-				let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: sourceAppFacetID))
-				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				return true
 			}
 
 			if returnURLFacetID.lowercased() == appIDFacetID.lowercased() {
-				let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))
-				doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+				doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				return true
 			}
 
@@ -64,21 +64,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					else { return } // TODO: return error somehow?
 
 				if ids.contains(where: { $0.lowercased() == sourceAppFacetID.lowercased() }) {
-					let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: sourceAppFacetID))
-					self.doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+					self.doSign(appID: appID, facetID: sourceAppFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				}
 
 				if ids.contains(where: { $0.lowercased() == returnURLFacetID.lowercased() }) {
-					let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: req.challenge, facetID: returnURLFacetID))
-					self.doSign(appID: appID, clientData: clientData, key: key, requestID: req.requestID, returnURL: returnURL)
+					self.doSign(appID: appID, facetID: returnURLFacetID, challenge: challenge, key: key, requestID: requestID, returnURL: returnURL)
 				}
+
+				// TODO: return error?
 			})
 
 			return true
 		}
 	}
 
-	private func doSign(appID: String, clientData: Data, key: U2FRegisteredKey, requestID: UInt64?, returnURL: URL) {
+	private func doSign(appID: String, facetID: String, challenge: String, key: U2FRegisteredKey, requestID: UInt64?, returnURL: URL) {
+		let clientData = try! JSONEncoder().encode(ClientData(type: .sign, challenge: challenge, facetID: facetID))
 		let keyHandle = key.keyHandle.data
 
 		(window?.rootViewController as? ViewController)?.handleAuthenticate(appID: appID, clientData: clientData, keyHandle: keyHandle, callback: { (signature) in
